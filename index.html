@@ -1,0 +1,1213 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>高等统计力学考前完整推导站</title>
+  <style>
+    :root {
+      --gold: #f4c95d;
+      --gold-strong: #ffd56a;
+      --gold-soft: rgba(244, 201, 93, .16);
+      --text: rgba(255,255,255,.94);
+      --muted: rgba(255,255,255,.64);
+      --faint: rgba(255,255,255,.38);
+      --glass: rgba(10,10,10,.58);
+      --line: rgba(244,201,93,.30);
+      --line-soft: rgba(255,255,255,.14);
+      --serif: "Noto Serif SC", "Songti SC", "SimSun", serif;
+      --sans: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      overflow-x: hidden;
+      color: var(--text);
+      background: #000;
+      font-family: var(--sans);
+      letter-spacing: 0;
+    }
+    button { font: inherit; color: inherit; border: 0; background: none; cursor: pointer; }
+    .site {
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at 78% 12%, rgba(244,201,93,.09), transparent 18rem),
+        url("./assets/starfield.png") center top / cover fixed no-repeat,
+        #000;
+    }
+
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      overflow: hidden;
+      padding: 16px clamp(14px, 2.4vw, 34px) 28px;
+      border-bottom: 1px solid rgba(244,201,93,.22);
+    }
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(90deg, rgba(0,0,0,.08), rgba(0,0,0,.42) 54%, rgba(0,0,0,.92)),
+        linear-gradient(180deg, rgba(0,0,0,.42), rgba(0,0,0,.12) 35%, rgba(0,0,0,.88));
+      z-index: 1;
+      pointer-events: none;
+    }
+    .hero-image {
+      position: absolute;
+      inset: 0;
+      background: url("./assets/cosmic-statmech.png") left center / cover no-repeat;
+      filter: saturate(1.05) contrast(1.05);
+      transform: scale(1.02);
+    }
+    .orbit-lines {
+      position: absolute;
+      inset: 72px 210px 0 18%;
+      border: 1px solid rgba(244,201,93,.18);
+      border-left: 0;
+      border-bottom: 0;
+      border-radius: 100% 0 0 0;
+      transform: rotate(8deg);
+      z-index: 2;
+      pointer-events: none;
+      box-shadow: 0 0 80px rgba(244,201,93,.08);
+    }
+    .orbit-lines::before,
+    .orbit-lines::after {
+      content: "";
+      position: absolute;
+      border: 1px solid rgba(255,255,255,.12);
+      border-left: 0;
+      border-bottom: 0;
+      border-radius: 100% 0 0 0;
+    }
+    .orbit-lines::before { inset: 58px 60px 0 8%; }
+    .orbit-lines::after { inset: 118px 145px 0 18%; }
+
+    .top-nav {
+      position: relative;
+      z-index: 5;
+      display: grid;
+      gap: 18px;
+    }
+    .major-tabs {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      border-bottom: 1px solid rgba(244,201,93,.30);
+      background: linear-gradient(180deg, rgba(0,0,0,.70), rgba(0,0,0,.30));
+      backdrop-filter: blur(14px);
+    }
+    .major-tab {
+      min-height: 62px;
+      border-right: 1px solid rgba(255,255,255,.18);
+      font-family: var(--serif);
+      font-size: clamp(22px, 3vw, 40px);
+      color: rgba(255,255,255,.54);
+      text-shadow: 0 2px 8px #000;
+      position: relative;
+    }
+    .major-tab:last-child { border-right: 0; }
+    .major-tab.active {
+      color: var(--gold-strong);
+    }
+    .major-tab.active::after {
+      content: "";
+      position: absolute;
+      left: 18%;
+      right: 18%;
+      bottom: -1px;
+      height: 2px;
+      background: var(--gold);
+      box-shadow: 0 0 28px rgba(244,201,93,.75);
+    }
+    .minor-tabs {
+      display: flex;
+      gap: clamp(18px, 4vw, 64px);
+      overflow-x: auto;
+      padding: 0 4px 10px;
+      scrollbar-width: thin;
+    }
+    .major-tabs::-webkit-scrollbar,
+    .minor-tabs::-webkit-scrollbar,
+    .timeline::-webkit-scrollbar,
+    .toc-list::-webkit-scrollbar { display: none; }
+    .major-tabs,
+    .minor-tabs,
+    .timeline,
+    .toc-list { scrollbar-width: none; }
+    .minor-tab {
+      flex: 0 0 auto;
+      min-width: 88px;
+      color: rgba(255,255,255,.62);
+      text-align: center;
+      font-family: var(--serif);
+      font-weight: 700;
+      font-size: clamp(15px, 1.8vw, 23px);
+      text-shadow: 0 2px 8px #000;
+      position: relative;
+      padding: 10px 4px;
+    }
+    .minor-tab.active { color: var(--gold-strong); }
+    .minor-tab.active::after {
+      content: "";
+      position: absolute;
+      left: 24%;
+      right: 24%;
+      bottom: 0;
+      height: 2px;
+      background: var(--gold);
+      box-shadow: 0 0 20px rgba(244,201,93,.8);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 4;
+      min-height: calc(100vh - 164px);
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 360px;
+      gap: 26px;
+      align-items: end;
+      padding-top: 28px;
+    }
+    .hero-title {
+      max-width: 840px;
+      padding-bottom: 42px;
+      text-shadow: 0 4px 18px #000;
+    }
+    .eyebrow {
+      color: var(--gold);
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      font-size: 12px;
+      margin: 0 0 12px;
+    }
+    h1 {
+      margin: 0;
+      font-family: var(--serif);
+      font-size: clamp(42px, 7vw, 88px);
+      line-height: .98;
+      letter-spacing: 0;
+    }
+    .hero-title p {
+      margin: 18px 0 0;
+      max-width: 680px;
+      color: rgba(255,255,255,.76);
+      line-height: 1.9;
+      font-size: 17px;
+    }
+
+    .right-rail {
+      align-self: stretch;
+      display: grid;
+      grid-template-rows: 1fr auto;
+      gap: 20px;
+      min-height: 610px;
+      padding-top: 20px;
+    }
+    .timeline {
+      justify-self: end;
+      width: 190px;
+      padding-top: 8px;
+    }
+    .time-node {
+      width: 100%;
+      display: grid;
+      grid-template-columns: 34px 1fr;
+      gap: 12px;
+      align-items: center;
+      min-height: 56px;
+      color: rgba(255,255,255,.55);
+      text-align: left;
+      position: relative;
+      font-family: var(--serif);
+      font-weight: 700;
+    }
+    .time-node::before {
+      content: "";
+      position: absolute;
+      left: 16px;
+      top: 0;
+      bottom: 0;
+      width: 1px;
+      background: rgba(255,255,255,.32);
+    }
+    .dot {
+      position: relative;
+      z-index: 2;
+      width: 16px;
+      height: 16px;
+      margin-left: 8px;
+      border-radius: 50%;
+      border: 2px solid rgba(255,255,255,.50);
+      background: #050505;
+    }
+    .time-node.active { color: var(--gold-strong); transform: scale(1.08); transform-origin: left center; }
+    .time-node.active .dot {
+      width: 34px;
+      height: 34px;
+      margin-left: 0;
+      border-color: var(--gold);
+      background: radial-gradient(circle, rgba(255,255,255,.92) 0 24%, rgba(244,201,93,.72) 26% 48%, rgba(244,201,93,.18) 50%);
+      box-shadow: 0 0 32px rgba(244,201,93,.9);
+    }
+    .time-node b { font-size: 20px; margin-right: 8px; }
+
+    .info-card {
+      width: min(100%, 520px);
+      border: 1px solid rgba(255,255,255,.26);
+      border-radius: 18px;
+      background: linear-gradient(135deg, rgba(36,34,24,.70), rgba(7,7,7,.70));
+      backdrop-filter: blur(18px);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.20), 0 18px 70px rgba(0,0,0,.48);
+      padding: 22px 24px 20px;
+    }
+    .info-card h2 {
+      margin: 0 0 12px;
+      font-family: var(--serif);
+      color: rgba(255,236,181,.92);
+      font-size: 34px;
+      line-height: 1.1;
+    }
+    .facts {
+      display: grid;
+      gap: 8px;
+      margin: 14px 0;
+      color: rgba(255,255,255,.72);
+    }
+    .fact {
+      display: grid;
+      grid-template-columns: 92px minmax(0,1fr);
+      gap: 12px;
+      border-bottom: 1px solid rgba(255,255,255,.12);
+      padding-bottom: 7px;
+    }
+    .fact span:first-child { color: rgba(255,255,255,.50); }
+    .fact span:last-child { text-align: right; font-weight: 700; }
+    .mode-tabs {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-top: 14px;
+    }
+    .mode-tab {
+      min-height: 36px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.18);
+      background: rgba(255,255,255,.06);
+      color: rgba(255,255,255,.64);
+    }
+    .mode-tab.active {
+      color: #1a1200;
+      background: linear-gradient(135deg, var(--gold), #fff0a8);
+      box-shadow: 0 0 24px rgba(244,201,93,.28);
+    }
+    .next-button {
+      width: 100%;
+      min-height: 58px;
+      margin-top: 14px;
+      border-radius: 10px;
+      border: 1px solid rgba(244,201,93,.34);
+      background: linear-gradient(135deg, rgba(244,201,93,.26), rgba(244,201,93,.08));
+      color: rgba(255,235,180,.90);
+      font-family: var(--serif);
+      font-size: 21px;
+    }
+
+    .study-body {
+      width: min(1480px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 34px 0 70px;
+    }
+    .section-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: 16px;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 14px;
+      margin-bottom: 20px;
+    }
+    .section-title h2 {
+      margin: 0;
+      font-family: var(--serif);
+      font-size: clamp(28px, 4vw, 52px);
+    }
+    .section-title p { margin: 0; color: var(--muted); max-width: 680px; line-height: 1.75; }
+    .detail-layout {
+      display: grid;
+      grid-template-columns: 300px minmax(0, 1fr);
+      gap: 22px;
+      align-items: start;
+    }
+    .toc-panel,
+    .derivation-panel {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: rgba(8,8,8,.72);
+      backdrop-filter: blur(18px);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.08);
+    }
+    .toc-panel {
+      position: sticky;
+      top: 16px;
+      padding: 14px;
+    }
+    .toc-title {
+      color: var(--gold);
+      font-size: 12px;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      margin: 4px 6px 12px;
+    }
+    .toc-button {
+      width: 100%;
+      text-align: left;
+      display: grid;
+      grid-template-columns: 34px 1fr;
+      gap: 10px;
+      padding: 11px 8px;
+      border-radius: 8px;
+      color: var(--muted);
+    }
+    .toc-button.active {
+      background: rgba(244,201,93,.12);
+      outline: 1px solid rgba(244,201,93,.34);
+      color: var(--text);
+    }
+    .toc-button b { color: var(--gold); }
+    .toc-button strong { display: block; }
+    .toc-button span { display: block; color: var(--faint); margin-top: 3px; font-size: 12px; }
+    .derivation-panel { padding: clamp(18px, 3vw, 34px); min-width: 0; }
+    .step-card {
+      display: block;
+      padding: 18px 18px 20px;
+      margin: 0 0 16px;
+      border: 1px solid rgba(244,201,93,.16);
+      border-radius: 14px;
+      background: rgba(255,255,255,.035);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.06), 0 18px 50px rgba(0,0,0,.22);
+      scroll-margin-top: 20px;
+    }
+    .step-card.active {
+      border-color: rgba(244,201,93,.44);
+      background: linear-gradient(180deg, rgba(244,201,93,.09), rgba(255,255,255,.035));
+    }
+    .step-heading {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    .step-badge {
+      width: 28px;
+      height: 28px;
+      flex: 0 0 28px;
+      display: inline-grid;
+      place-items: center;
+      border-radius: 999px;
+      color: #160f00;
+      background: linear-gradient(135deg, var(--gold), #fff0a8);
+      font-weight: 900;
+      font-size: 14px;
+      box-shadow: 0 0 22px rgba(244,201,93,.35);
+    }
+    .step-card h3 {
+      margin: 0;
+      color: var(--gold);
+      font-size: clamp(17px, 2vw, 23px);
+      font-weight: 800;
+      line-height: 1.45;
+    }
+    .formula-list,
+    .explain-list,
+    .exam-list {
+      display: grid;
+      gap: 10px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+    .formula {
+      display: block;
+      border: 1px solid rgba(255,255,255,.13);
+      border-radius: 14px;
+      padding: 15px 17px;
+      background: rgba(255,255,255,.065);
+      color: rgba(255,246,222,.92);
+      font-family: "Cambria Math", "Times New Roman", "Noto Serif SC", serif;
+      font-size: 19px;
+      line-height: 1.8;
+      overflow-wrap: anywhere;
+    }
+    .formula sub,
+    .formula sup { line-height: 0; }
+    .explain-grid {
+      display: grid;
+      grid-template-columns: minmax(0,1fr) minmax(0, .95fr);
+      gap: 12px;
+      margin-top: 14px;
+    }
+    .note-box {
+      border: 1px solid rgba(244,201,93,.22);
+      border-radius: 10px;
+      padding: 14px 15px;
+      background: rgba(244,201,93,.055);
+    }
+    .note-box h4 {
+      margin: 0 0 8px;
+      color: var(--gold);
+      font-size: 14px;
+    }
+    .note-box.exam {
+      border-color: rgba(255,255,255,.14);
+      background: rgba(255,255,255,.045);
+    }
+    .note-box p,
+    .note-box li {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.85;
+    }
+    .note-box li + li { margin-top: 6px; }
+    .note-box ul { margin: 0; padding-left: 18px; }
+    .source-strip {
+      margin-top: 18px;
+      color: var(--faint);
+      font-size: 12px;
+      line-height: 1.7;
+    }
+
+    @media (max-width: 980px) {
+      .hero { min-height: auto; }
+      .major-tabs { grid-template-columns: repeat(3, max-content); overflow-x: auto; }
+      .major-tab { min-width: 160px; padding: 0 14px; }
+      .hero-content { grid-template-columns: 1fr; min-height: auto; padding-top: 24px; }
+      .hero-title { padding: 54vh 0 8px; }
+      .right-rail { min-height: auto; grid-template-rows: auto auto; }
+      .timeline {
+        justify-self: stretch;
+        width: 100%;
+        display: flex;
+        overflow-x: auto;
+        gap: 12px;
+        padding-bottom: 8px;
+      }
+      .time-node { min-width: 170px; }
+      .time-node::before { display: none; }
+      .info-card { width: 100%; }
+      .detail-layout { grid-template-columns: 1fr; }
+      .toc-panel { position: static; }
+      .toc-list { display: flex; overflow-x: auto; gap: 10px; }
+      .toc-button { min-width: 230px; }
+      .explain-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 560px) {
+      .hero { padding-inline: 10px; }
+      .major-tab { min-height: 52px; font-size: 22px; }
+      .minor-tabs { gap: 18px; }
+      h1 { font-size: 39px; }
+      .hero-title { padding-top: 48vh; }
+      .info-card { padding: 18px; border-radius: 14px; }
+      .info-card h2 { font-size: 28px; }
+      .fact { grid-template-columns: 82px 1fr; }
+      .mode-tabs { grid-template-columns: 1fr; }
+      .study-body { width: min(calc(100% - 20px), 760px); }
+      .section-title { display: block; }
+      .section-title p { margin-top: 10px; }
+      .formula { font-size: 17px; }
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="./expanded-content.js"></script>
+  <script>
+    const { useMemo, useState } = React;
+
+    const DATA = window.EXPANDED_DATA || [
+      {
+        id: "ensemble",
+        name: "系综理论",
+        topics: [
+          topic("entropy", "最大熵原理", "考试要求 1-2", "从统计熵严格推出 Boltzmann 因子", "S = -k<sub>B</sub>Σp<sub>i</sub>ln p<sub>i</sub>", [
+            step("确定问题：在已知宏观约束下求最无偏分布", [
+              "设系统可能处在微观态 i，概率为 p<sub>i</sub>，所有概率必须满足 Σ<sub>i</sub>p<sub>i</sub>=1。",
+              "若系统只与热库交换能量而粒子数和体积固定，则还知道平均能量 U=Σ<sub>i</sub>p<sub>i</sub>E<sub>i</sub>。",
+              "Gibbs 熵写成 S=-k<sub>B</sub>Σ<sub>i</sub>p<sub>i</sub>ln p<sub>i</sub>。"
+            ], [
+              "这里的目标不是猜某个 p<sub>i</sub>，而是在所有满足约束的概率分布中找熵最大的那个。",
+              "归一化约束保证它真的是概率分布；平均能量约束保证它代表同一个宏观平衡态。",
+              "如果考试只写最终 p<sub>i</sub>∝e<sup>-βE<sub>i</sub></sup>，中间变分逻辑就缺了。"
+            ], "先写约束，再写熵。不要把 Boltzmann 因子当作先验结论。"),
+            step("构造带约束的变分泛函", [
+              "把熵除以 k<sub>B</sub>，令 Φ=-Σ<sub>i</sub>p<sub>i</sub>ln p<sub>i</sub>-α(Σ<sub>i</sub>p<sub>i</sub>-1)-β(Σ<sub>i</sub>p<sub>i</sub>E<sub>i</sub>-U)。",
+              "α 是归一化约束的拉格朗日乘子。",
+              "β 是平均能量约束的拉格朗日乘子。"
+            ], [
+              "把常数项 1 和 U 写进括号，变分时它们不变，但能清楚说明约束来自哪里。",
+              "β 现在只是数学乘子；后面通过热力学关系才识别为 1/(k<sub>B</sub>T)。",
+              "这一步是最大熵推导最核心的结构。"
+            ], "符号 β 不要一开始就说等于 1/k<sub>B</sub>T，要先由比较得到。"),
+            step("逐项变分，不跳过导数", [
+              "对第一项：δ[-p<sub>i</sub>ln p<sub>i</sub>]=-(ln p<sub>i</sub>+1)δp<sub>i</sub>。",
+              "因此 δΦ=Σ<sub>i</sub>[-(ln p<sub>i</sub>+1)-α-βE<sub>i</sub>]δp<sub>i</sub>。",
+              "因为每个 δp<sub>i</sub> 可以独立变化，所以方括号内必须逐项为零。"
+            ], [
+              "很多简略答案会直接写 ln p<sub>i</sub>=常数-βE<sub>i</sub>，但考试要能说明为什么每个系数都为零。",
+              "d(p ln p)/dp=ln p+1 是最容易漏的一小步。",
+              "独立变分是从泛函极值到逐态方程的桥。"
+            ], "写出 δΦ 的求和式，老师就能看出你真的会推。"),
+            step("解出指数权重并归一化", [
+              "由 ln p<sub>i</sub>+1+α+βE<sub>i</sub>=0 得 ln p<sub>i</sub>=-1-α-βE<sub>i</sub>。",
+              "两边取指数：p<sub>i</sub>=e<sup>-1-α</sup>e<sup>-βE<sub>i</sub></sup>。",
+              "利用 Σ<sub>i</sub>p<sub>i</sub>=1，可得 e<sup>-1-α</sup>=1/Z，且 Z=Σ<sub>i</sub>e<sup>-βE<sub>i</sub></sup>。"
+            ], [
+              "所有与 i 无关的因子都被归一化常数吸收。",
+              "Z 不是凭空定义出来的，它就是归一化分母。",
+              "Boltzmann 权重来自能量约束，而不是来自某个经典假设。"
+            ], "最终写 p<sub>i</sub>=e<sup>-βE<sub>i</sub></sup>/Z。"),
+            step("把 β 识别为温度并连接热力学", [
+              "熵代回：S=-k<sub>B</sub>Σp<sub>i</sub>ln p<sub>i</sub>=k<sub>B</sub>βU+k<sub>B</sub>ln Z。",
+              "热力学定义给出 1/T=(∂S/∂U)<sub>V,N</sub>。",
+              "比较可得 β=1/(k<sub>B</sub>T)。"
+            ], [
+              "这样才完整说明数学乘子 β 的物理意义。",
+              "温度不是额外假设，而是从熵对能量的响应中出现。",
+              "这也为正则自由能 F=-k<sub>B</sub>T ln Z 做准备。"
+            ], "最大熵 → 指数权重 → 配分函数 → 温度，这是完整闭环。")
+          ]),
+          topic("canonical", "正则/巨正则", "考试要求 3-5", "特性函数、涨落和系综等价", "F=-k<sub>B</sub>TlnZ，Ω=-k<sub>B</sub>TlnΞ", [
+            step("正则配分函数和平均能量", [
+              "正则系综固定 T,V,N，概率为 p<sub>i</sub>=e<sup>-βE<sub>i</sub></sup>/Z。",
+              "Z(T,V,N)=Σ<sub>i</sub>e<sup>-βE<sub>i</sub></sup>。",
+              "对 lnZ 求导：∂lnZ/∂β=(1/Z)Σ<sub>i</sub>(-E<sub>i</sub>)e<sup>-βE<sub>i</sub></sup>=-U。",
+              "所以 U=-∂lnZ/∂β。"
+            ], [
+              "这一步展示配分函数如何产生内能。",
+              "β 导数把能量 E<sub>i</sub> 从指数中带出来。",
+              "后面所有涨落公式都来自继续求导。"
+            ], "不要只背 U=-∂lnZ/∂β，最好能写出中间一行。"),
+            step("从熵推出 Helmholtz 自由能", [
+              "ln p<sub>i</sub>=-βE<sub>i</sub>-lnZ。",
+              "S=-k<sub>B</sub>Σp<sub>i</sub>lnp<sub>i</sub>=k<sub>B</sub>βU+k<sub>B</sub>lnZ。",
+              "F=U-TS=U-T(k<sub>B</sub>βU+k<sub>B</sub>lnZ)。",
+              "由于 k<sub>B</sub>Tβ=1，得到 F=-k<sub>B</sub>TlnZ。"
+            ], [
+              "这比直接写 F=-k<sub>B</sub>TlnZ 更完整。",
+              "它说明自由能是由统计熵和配分函数共同推出的。",
+              "正则系综的自然变量是 T,V,N，因此 F 是特性函数。"
+            ], "写出 S=k<sub>B</sub>βU+k<sub>B</sub>lnZ，推导会很稳。"),
+            step("由 F 得到热力学量", [
+              "热力学微分：dF=-SdT-PdV+μdN。",
+              "因此 S=-(∂F/∂T)<sub>V,N</sub>。",
+              "P=-(∂F/∂V)<sub>T,N</sub>。",
+              "μ=(∂F/∂N)<sub>T,V</sub>。"
+            ], [
+              "所谓特性函数，就是对自然变量求偏导可以得到其他热力学量。",
+              "正则系综固定 T,V,N，所以 F 最方便。",
+              "理想气体状态方程也可从 P=-(∂F/∂V) 推出。"
+            ], "考试问“特性函数统计表达式”时，要写出微分关系。"),
+            step("巨正则配分函数", [
+              "巨正则系综允许能量和粒子数都涨落，权重为 e<sup>-β(E<sub>r,N</sub>-μN)</sup>。",
+              "Ξ(T,V,μ)=Σ<sub>N</sub>Σ<sub>r</sub>e<sup>-β(E<sub>r,N</sub>-μN)</sup>。",
+              "平均粒子数为 N̄=(1/β)(∂lnΞ/∂μ)<sub>T,V</sub>。",
+              "平均能量为 U=-∂lnΞ/∂β+μN̄。"
+            ], [
+              "与正则相比，多了对粒子数 N 的求和。",
+              "指数中的 E-μN 表示热库和粒子库共同控制概率。",
+              "对 μ 求导会把 N 带下来。"
+            ], "巨正则适合量子理想气体，因为每个单粒子能级独立。"),
+            step("巨势和涨落", [
+              "定义巨势 Ω=-k<sub>B</sub>TlnΞ。",
+              "热力学微分：dΩ=-SdT-PdV-Ndμ。",
+              "均匀体系有 Ω=-PV。",
+              "粒子数涨落：⟨(ΔN)<sup>2</sup>⟩=k<sub>B</sub>T(∂N/∂μ)<sub>T,V</sub>。"
+            ], [
+              "巨势的自然变量是 T,V,μ。",
+              "粒子数涨落由 lnΞ 对 μ 的二阶导数给出。",
+              "热力学极限中相对涨落通常随 N<sup>-1/2</sup> 下降，这就是系综等价的根源。"
+            ], "系综等价不要只写“热力学极限相等”，要说明相对涨落趋零。"),
+            step("正则能量涨落完整推导", [
+              "U=-∂lnZ/∂β。",
+              "∂<sup>2</sup>lnZ/∂β<sup>2</sup>=⟨E<sup>2</sup>⟩-⟨E⟩<sup>2</sup>=⟨(ΔE)<sup>2</sup>⟩。",
+              "所以 ⟨(ΔE)<sup>2</sup>⟩=-∂U/∂β。",
+              "又 dβ/dT=-1/(k<sub>B</sub>T<sup>2</sup>)，因此 ⟨(ΔE)<sup>2</sup>⟩=k<sub>B</sub>T<sup>2</sup>C<sub>V</sub>。"
+            ], [
+              "这是系综等价最常考的计算。",
+              "二阶导数给方差，不是只给平均能量。",
+              "当 C<sub>V</sub>∝N 时，相对涨落 ΔE/E∝N<sup>-1/2</sup>。"
+            ], "最后一句写出相对涨落趋零，才算回答“等价性”。")
+          ])
+        ]
+      },
+      {
+        id: "quantum",
+        name: "量子统计",
+        topics: [
+          topic("fdbe", "费米/玻色分布", "考试要求 6-7", "从二次量子化哈密顿量推出分布", "n̄=1/(e<sup>β(ε-μ)</sup>±1)", [
+            step("写出理想量子气体的占据数形式", [
+              "无相互作用量子气体的哈密顿量可写为 H=Σ<sub>k</sub>ε<sub>k</sub>n<sub>k</sub>。",
+              "总粒子数 N=Σ<sub>k</sub>n<sub>k</sub>。",
+              "巨正则指数为 H-μN=Σ<sub>k</sub>(ε<sub>k</sub>-μ)n<sub>k</sub>。"
+            ], [
+              "二次量子化把多粒子状态写成每个单粒子态的占据数。",
+              "理想气体没有能级之间的相互作用，所以每个 k 模式独立。",
+              "这就是后面配分函数能写成乘积的原因。"
+            ], "先写 H 和 N，再写 H-μN，顺序不要乱。"),
+            step("巨正则配分函数因式分解", [
+              "Ξ=Tr e<sup>-β(H-μN)</sup>。",
+              "代入 H-μN 后，Ξ=Π<sub>k</sub>Σ<sub>nₖ</sub>e<sup>-β(ε<sub>k</sub>-μ)n<sub>k</sub></sup>。",
+              "定义单能级配分函数 Ξ<sub>k</sub>=Σ<sub>n</sub>e<sup>-β(ε<sub>k</sub>-μ)n</sup>。"
+            ], [
+              "迹就是对所有占据数组合求和。",
+              "指数里是各模式之和，求和结构因此分解成每个模式的乘积。",
+              "费米和玻色的差异只在 n 的允许取值。"
+            ], "这一步必须出现 Π<sub>k</sub>，否则不像从哈密顿量推出来。"),
+            step("费米子：占据数只能为 0 或 1", [
+              "费米子满足 Pauli 不相容原理，所以 n=0,1。",
+              "Ξ<sub>k</sub><sup>F</sup>=1+e<sup>-β(ε<sub>k</sub>-μ)</sup>。",
+              "lnΞ<sup>F</sup>=Σ<sub>k</sub>ln[1+e<sup>-β(ε<sub>k</sub>-μ)</sup>]。"
+            ], [
+              "单能级只有空态和占据态两种可能。",
+              "这就是费米分布分母出现加号的来源。",
+              "低温时 μ 附近形成尖锐费米面。"
+            ], "费米子不能用几何级数求和，因为 n 不到无穷。"),
+            step("玻色子：占据数可以任意大", [
+              "玻色子允许 n=0,1,2,…。",
+              "令 x=e<sup>-β(ε<sub>k</sub>-μ)</sup>，则 Ξ<sub>k</sub><sup>B</sup>=Σ<sub>n=0</sub><sup>∞</sup>x<sup>n</sup>。",
+              "几何级数给出 Ξ<sub>k</sub><sup>B</sup>=1/(1-x)。",
+              "因此 lnΞ<sup>B</sup>=-Σ<sub>k</sub>ln[1-e<sup>-β(ε<sub>k</sub>-μ)</sup>]。"
+            ], [
+              "玻色子可在同一单粒子态中宏观占据。",
+              "收敛要求 μ 小于最低单粒子能级。",
+              "当 μ 逼近基态能量，BEC 就可能发生。"
+            ], "必须写收敛条件，这是 BEC 的伏笔。"),
+            step("从配分函数求平均占据", [
+              "平均占据可由 n̄<sub>k</sub>=-(1/β)∂lnΞ<sub>k</sub>/∂ε<sub>k</sub> 得到。",
+              "费米子：n̄<sub>k</sub>=1/[e<sup>β(ε<sub>k</sub>-μ)</sup>+1]。",
+              "玻色子：n̄<sub>k</sub>=1/[e<sup>β(ε<sub>k</sub>-μ)</sup>-1]。",
+              "经典极限 e<sup>β(ε-μ)</sup>≫1 时，两者都趋于 e<sup>-β(ε-μ)</sup>。"
+            ], [
+              "对 ε<sub>k</sub> 求导时，能级能量变化会带出该能级的占据数。",
+              "加号和减号不是记忆技巧，而是占据数求和上限不同造成的。",
+              "经典极限说明量子统计在低密度高温下退化为 Boltzmann 统计。"
+            ], "最后一定写出两个分布的对照。")
+          ]),
+          topic("fermi", "零温费米气", "考试要求 8-12", "DOS、简并压、Sommerfeld 展开", "U(0)=3NE<sub>F</sub>/5", [
+            step("从 k 空间数单粒子态", [
+              "周期边界条件下，k 空间每个态占体积 (2π/L)<sup>3</sup>。",
+              "半径 k 到 k+dk 的球壳体积为 4πk<sup>2</sup>dk。",
+              "含自旋简并 g<sub>s</sub> 时，态数 dN=g<sub>s</sub>V·4πk<sup>2</sup>dk/(2π)<sup>3</sup>。"
+            ], [
+              "DOS 的推导本质是数态，不是背公式。",
+              "三维球壳面积带来 k<sup>2</sup>。",
+              "电子通常 g<sub>s</sub>=2。"
+            ], "先写 k 空间态密度，再换变量到能量。"),
+            step("把 k 换成能量 ε", [
+              "自由粒子 ε=ℏ<sup>2</sup>k<sup>2</sup>/(2m)。",
+              "因此 k=(2mε)<sup>1/2</sup>/ℏ，且 dk/dε=m/(ℏ<sup>2</sup>k)。",
+              "g(ε)=dN/dε=g<sub>s</sub>V(2m/ℏ<sup>2</sup>)<sup>3/2</sup>ε<sup>1/2</sup>/(4π<sup>2</sup>)。"
+            ], [
+              "能量态密度 g(ε) 表示每单位能量间隔内有多少态。",
+              "三维非相对论自由粒子的 DOS 正比于 ε<sup>1/2</sup>。",
+              "若 g<sub>s</sub>=2，就得到常见的 V(2m/ℏ<sup>2</sup>)<sup>3/2</sup>ε<sup>1/2</sup>/(2π<sup>2</sup>)。"
+            ], "别把二维常数 DOS 和三维 sqrt(ε) 搞混。"),
+            step("T=0 的填充和费米能", [
+              "T=0 时，ε&lt;E<sub>F</sub> 的态全部占据，ε&gt;E<sub>F</sub> 的态全部空着。",
+              "粒子数 N=∫<sub>0</sub><sup>E<sub>F</sub></sup>g(ε)dε。",
+              "若 g(ε)=Cε<sup>1/2</sup>，则 N=(2C/3)E<sub>F</sub><sup>3/2</sup>。"
+            ], [
+              "费米面由粒子数决定。",
+              "T=0 并不是所有粒子都在最低态，因为 Pauli 原理限制每个态的占据。",
+              "这就是费米气和玻色凝聚的根本差异。"
+            ], "写清楚“填到 E<sub>F</sub> 为止”。"),
+            step("零温内能和平均能量", [
+              "内能 U=∫<sub>0</sub><sup>E<sub>F</sub></sup>εg(ε)dε。",
+              "代入 g(ε)=Cε<sup>1/2</sup> 得 U=C∫<sub>0</sub><sup>E<sub>F</sub></sup>ε<sup>3/2</sup>dε=(2C/5)E<sub>F</sub><sup>5/2</sup>。",
+              "与 N=(2C/3)E<sub>F</sub><sup>3/2</sup> 相除，得到 U/N=3E<sub>F</sub>/5。"
+            ], [
+              "平均能量不是 E<sub>F</sub>，而是 3E<sub>F</sub>/5。",
+              "这个结果常用于压强推导。",
+              "每一步都是幂函数积分，考试很容易拿分。"
+            ], "不要把最高能量和平均能量混为一谈。"),
+            step("简并压和状态方程", [
+              "非相对论自由气体满足 P=2U/(3V)。",
+              "因此 T=0 时 P=(2/5)nE<sub>F</sub>。",
+              "由于 E<sub>F</sub>∝n<sup>2/3</sup>，所以 P∝n<sup>5/3</sup>。"
+            ], [
+              "即使温度为零，费米气仍有压强，这叫简并压。",
+              "白矮星电子简并压与这个统计结果直接相关。",
+              "这个压强不是热运动造成的，而是 Pauli 原理造成的动量填充。"
+            ], "写出 P∝n<sup>5/3</sup> 可体现物理理解。"),
+            step("Sommerfeld 展开到电子热容", [
+              "对积分 I=∫<sub>0</sub><sup>∞</sup>φ(ε)f(ε)dε，低温展开为 I=∫<sub>0</sub><sup>μ</sup>φ(ε)dε+(π<sup>2</sup>/6)(k<sub>B</sub>T)<sup>2</sup>φ′(μ)+…。",
+              "粒子数固定要求 μ(T)=E<sub>F</sub>[1-(π<sup>2</sup>/12)(k<sub>B</sub>T/E<sub>F</sub>)<sup>2</sup>+…]。",
+              "内能低温修正给出 C<sub>V</sub>=(π<sup>2</sup>/2)Nk<sub>B</sub>(T/T<sub>F</sub>)。"
+            ], [
+              "只有费米面附近宽度约 k<sub>B</sub>T 的粒子能被激发。",
+              "所以电子热容与 T 成正比，而不是经典的常数。",
+              "Sommerfeld 展开题要说明粒子数固定会让 μ 随 T 稍微下降。"
+            ], "会写展开公式、μ 修正、C<sub>V</sub> 结果即可覆盖大多数考法。")
+          ]),
+          topic("phonon", "声子与电磁场", "考试要求 8-12", "一维链、Debye、光子气与相干态", "H=Σℏω(a<sup>†</sup>a+1/2)", [
+            step("一维原子链的哈密顿量", [
+              "设第 n 个原子位移为 u<sub>n</sub>，质量 M，相邻弹簧常数 C。",
+              "动能 T=Σ<sub>n</sub>(1/2)M(d u<sub>n</sub>/dt)<sup>2</sup>。",
+              "势能 V=Σ<sub>n</sub>(1/2)C(u<sub>n+1</sub>-u<sub>n</sub>)<sup>2</sup>。",
+              "总哈密顿量 H=T+V。"
+            ], [
+              "势能必须写相对位移 u<sub>n+1</sub>-u<sub>n</sub>。",
+              "整体平移不改变弹簧长度，所以 q=0 声学模式频率为零。",
+              "这是声子推导的起点。"
+            ], "先写 H[u<sub>n</sub>]，再求运动方程。"),
+            step("运动方程和平面波解", [
+              "第 n 个原子受力 F<sub>n</sub>=C(u<sub>n+1</sub>-u<sub>n</sub>)+C(u<sub>n-1</sub>-u<sub>n</sub>)。",
+              "牛顿方程：M d<sup>2</sup>u<sub>n</sub>/dt<sup>2</sup>=C(u<sub>n+1</sub>+u<sub>n-1</sub>-2u<sub>n</sub>)。",
+              "代入 u<sub>n</sub>=u e<sup>i(qna-ωt)</sup> 得 ω<sup>2</sup>(q)=4C sin<sup>2</sup>(qa/2)/M。"
+            ], [
+              "离散二阶差分产生色散关系。",
+              "小 q 时 sin(qa/2)≈qa/2，因此 ω≈v<sub>s</sub>|q|。",
+              "这就是声学声子线性色散的来源。"
+            ], "每一步写出左右弹簧力，推导才完整。"),
+            step("正常模式量子化", [
+              "做 Fourier 展开 u<sub>n</sub>=N<sup>-1/2</sup>Σ<sub>q</sub>Q<sub>q</sub>e<sup>iqna</sup>。",
+              "哈密顿量变成一组独立谐振子：H=Σ<sub>q</sub>[P<sub>q</sub>P<sub>-q</sub>/(2M)+(1/2)Mω<sub>q</sub><sup>2</sup>Q<sub>q</sub>Q<sub>-q</sub>]。",
+              "引入 a<sub>q</sub> 与 a<sub>q</sub><sup>†</sup> 后，H=Σ<sub>q</sub>ℏω<sub>q</sub>(a<sub>q</sub><sup>†</sup>a<sub>q</sub>+1/2)。"
+            ], [
+              "Fourier 变换把耦合振子解耦。",
+              "每个 q 模式就是一个量子谐振子。",
+              "声子是这些集体振动模式的能量量子。"
+            ], "声子不是单个原子，而是正常模式的量子。"),
+            step("Debye 热容完整链条", [
+              "声子热内能 U=∫<sub>0</sub><sup>ω<sub>D</sub></sup>g(ω)ℏω/[e<sup>βℏω</sup>-1]dω。",
+              "三维线性色散 ω=v<sub>s</sub>q 使 g(ω)∝ω<sup>2</sup>。",
+              "用总模式数 ∫<sub>0</sub><sup>ω<sub>D</sub></sup>g(ω)dω=3N 定标，得 g(ω)=9Nω<sup>2</sup>/ω<sub>D</sub><sup>3</sup>。",
+              "令 x=ℏω/(k<sub>B</sub>T)，θ<sub>D</sub>=ℏω<sub>D</sub>/k<sub>B</sub>，低温得到 C<sub>V</sub>=12π<sup>4</sup>Nk<sub>B</sub>(T/θ<sub>D</sub>)<sup>3</sup>/5，高温得到 3Nk<sub>B</sub>。"
+            ], [
+              "Debye 模型的本质是用线性色散和球形截止近似真实声子谱。",
+              "低温 T<sup>3</sup> 来自三维低频 DOS 的 ω<sup>2</sup>。",
+              "高温回到能均分，即 Dulong-Petit 极限。"
+            ], "必须写假设和局限：线性色散、各向同性、单一声速、球形截止。"),
+            step("电磁场量子化与黑体", [
+              "场能量 H=(1/2)∫d<sup>3</sup>r[ε<sub>0</sub>E<sup>2</sup>+B<sup>2</sup>/μ<sub>0</sub>]。",
+              "库伦规范 ∇·A=0，无源横场中 E=-∂A/∂t，B=∇×A。",
+              "Fourier 展开后每个 (k,λ) 模式是频率 ω<sub>k</sub>=c|k| 的谐振子。",
+              "量子化后 H=Σ<sub>k,λ</sub>ℏω<sub>k</sub>(a<sub>kλ</sub><sup>†</sup>a<sub>kλ</sub>+1/2)。"
+            ], [
+              "这与声子量子化完全平行。",
+              "λ 表示两个横向偏振。",
+              "光子数不守恒，所以黑体辐射中化学势 μ=0。"
+            ], "考试要求的“微元法”重点是把电磁场哈密顿量变成谐振子形式。"),
+            step("相干态为什么像经典场", [
+              "相干态定义为 a|α⟩=α|α⟩。",
+              "|α⟩=e<sup>-|α|²/2</sup>Σ<sub>n=0</sub><sup>∞</sup>α<sup>n</sup>|n⟩/√(n!)。",
+              "光子数分布 P(n)=e<sup>-|α|²</sup>|α|<sup>2n</sup>/n!，平均数 n̄=|α|<sup>2</sup>。",
+              "相对涨落 Δn/n̄=1/√n̄，当 n̄ 很大时趋于零。"
+            ], [
+              "相干态不是固定光子数态，而是不同数态的叠加。",
+              "它有清楚相位，并且大光子数时相对涨落小。",
+              "所以经典电磁波在统计意义上对应相干态。"
+            ], "BEC 与相干态相似：宏观占据让场算符可近似为经典复数。")
+          ]),
+          topic("manybody", "BEC/平均场/BCS", "考试要求 13-16", "BEC、Hubbard、Hartree-Fock、BCS 的统一平均场套路", "Δ=-ΣV⟨cc⟩", [
+            step("BEC 临界温度从激发态容量推出", [
+              "理想玻色气体粒子数 N=N<sub>0</sub>+N<sub>ex</sub>。",
+              "激发态粒子数 N<sub>ex</sub>=∫<sub>0</sub><sup>∞</sup>g(ε)dε/[e<sup>β(ε-μ)</sup>-1]。",
+              "凝聚临界点 μ→ε<sub>0</sub>，常取 ε<sub>0</sub>=0，且 N<sub>0</sub> 刚开始宏观出现。",
+              "三维自由粒子积分给 N=Vζ(3/2)/λ<sub>T</sub><sup>3</sup>。",
+              "因此 T<sub>c</sub>=(2πℏ<sup>2</sup>/mk<sub>B</sub>)[n/ζ(3/2)]<sup>2/3</sup>。"
+            ], [
+              "玻色气体激发态能容纳的粒子数有限。",
+              "当总粒子数超过激发态容量，多余粒子只能进入基态。",
+              "宏观基态占据使场算符可近似为经典复数，所以 BEC 与相干态有相同的“宏观相位”味道。"
+            ], "要从 N<sub>ex</sub> 的积分容量推出 T<sub>c</sub>，不要只背公式。"),
+            step("Hubbard 模型的平均场铁磁", [
+              "Hubbard 哈密顿量 H=-tΣ<sub>⟨ij⟩,σ</sub>(c<sub>iσ</sub><sup>†</sup>c<sub>jσ</sub>+h.c.)+UΣ<sub>i</sub>n<sub>i↑</sub>n<sub>i↓</sub>。",
+              "选择铁磁序参量 m=⟨n<sub>↑</sub>⟩-⟨n<sub>↓</sub>⟩。",
+              "平均场解耦：n<sub>↑</sub>n<sub>↓</sub>≈n<sub>↑</sub>⟨n<sub>↓</sub>⟩+⟨n<sub>↑</sub>⟩n<sub>↓</sub>-⟨n<sub>↑</sub>⟩⟨n<sub>↓</sub>⟩。",
+              "Fourier 变换后得到自旋相关能带 ε<sub>kσ</sub>=ε<sub>k</sub>+U⟨n<sub>-σ</sub>⟩。"
+            ], [
+              "t 项描述电子在格点间跳跃，U 项描述同一格点上下自旋排斥。",
+              "平均场的目的，是把四费米相互作用变成单粒子有效势。",
+              "自旋上、下能带发生相对移动时，就可能出现自发磁化。"
+            ], "写清楚序参量 m 和平均场解耦公式。"),
+            step("Hubbard 自洽求解", [
+              "先假设一个 m，从而得到 ⟨n<sub>↑</sub>⟩ 与 ⟨n<sub>↓</sub>⟩。",
+              "用 ε<sub>kσ</sub> 和 Fermi 分布计算新的 n<sub>σ</sub>=Σ<sub>k</sub>f(ε<sub>kσ</sub>)。",
+              "更新 m<sub>out</sub>=n<sub>↑</sub>-n<sub>↓</sub>。",
+              "若 m<sub>out</sub>=m<sub>in</sub>，得到自洽解；若存在非零解，则对应自发铁磁相。"
+            ], [
+              "自洽不是代一次公式，而是固定点问题。",
+              "非零序参量代表体系自发选择一个自旋方向。",
+              "Stoner 图像中，相互作用能降低要超过动能代价。"
+            ], "考试问“自洽”时，要写输入 m、算能带、算输出 m、比较这四步。"),
+            step("Hartree-Fock 的直接项与交换项", [
+              "库伦相互作用可写为 H<sub>int</sub>=(1/2)Σ<sub>ijkl</sub>V<sub>ij;kl</sub>c<sub>i</sub><sup>†</sup>c<sub>j</sub><sup>†</sup>c<sub>l</sub>c<sub>k</sub>。",
+              "Hartree 项来自密度平均，形式上对应粒子在平均电荷云中运动。",
+              "Fock 项来自交换平均，包含 ⟨c<sub>i</sub><sup>†</sup>c<sub>l</sub>⟩ 这类收缩。",
+              "费米子反对易关系使交换项带有负号结构。"
+            ], [
+              "Hartree 是经典平均电势，Fock 是量子交换效应。",
+              "Fock 项只在相同自旋费米子之间有交换贡献。",
+              "HF 近似仍需要自洽，因为平均场由占据态本身决定。"
+            ], "不要把 Hartree 和 Fock 都说成“平均一下”；要区分直接和交换。"),
+            step("Cooper 不稳定", [
+              "考虑费米面附近两个电子受到任意弱吸引相互作用 V&lt;0。",
+              "两体束缚方程可化为 1=|V|Σ<sub>k</sub>1/(2ξ<sub>k</sub>-E)。",
+              "费米面附近态密度近似常数，能量积分出现对数增强。",
+              "因此任意弱吸引都会产生束缚的 Cooper 对。"
+            ], [
+              "关键不是强吸引，而是费米面附近有大量低能态。",
+              "对数增强让弱吸引也足以破坏正常费米海。",
+              "这解释了为什么 BCS 配对从费米面附近发生。"
+            ], "写出“任意弱吸引 + 费米面态密度 + 对数增强”。"),
+            step("BCS 平均场与 Bogoliubov 准粒子", [
+              "BCS 哈密顿量 H=Σ<sub>kσ</sub>ξ<sub>k</sub>c<sub>kσ</sub><sup>†</sup>c<sub>kσ</sub>-Σ<sub>kk′</sub>V<sub>kk′</sub>c<sub>k↑</sub><sup>†</sup>c<sub>-k↓</sub><sup>†</sup>c<sub>-k′↓</sub>c<sub>k′↑</sub>。",
+              "定义超导序参量 Δ<sub>k</sub>=-Σ<sub>k′</sub>V<sub>kk′</sub>⟨c<sub>-k′↓</sub>c<sub>k′↑</sub>⟩。",
+              "平均场哈密顿量含配对项 Δ<sub>k</sub>c<sub>k↑</sub><sup>†</sup>c<sub>-k↓</sub><sup>†</sup>+h.c.。",
+              "Bogoliubov 变换后准粒子能谱 E<sub>k</sub>=√(ξ<sub>k</sub><sup>2</sup>+|Δ|<sup>2</sup>)。",
+              "BCS 基态 |BCS⟩=Π<sub>k</sub>(u<sub>k</sub>+v<sub>k</sub>c<sub>k↑</sub><sup>†</sup>c<sub>-k↓</sub><sup>†</sup>)|0⟩。"
+            ], [
+              "Δ 是 Cooper 对凝聚振幅，不是普通单粒子平均数。",
+              "Bogoliubov 变换把粒子和空穴混合，从而对角化配对哈密顿量。",
+              "准粒子能谱出现能隙 |Δ|，BCS 基态就是准粒子真空。"
+            ], "考试要求能证明准粒子真空态就是 BCS 基态，至少要写出 |BCS⟩ 的乘积形式。")
+          ])
+        ]
+      },
+      {
+        id: "astro",
+        name: "宇宙热史",
+        topics: [
+          topic("friedmann", "膨胀方程", "20260615-20260617 视频", "Friedmann、状态方程和温度标度", "H=Ṙ/R", [
+            step("从哈勃膨胀定义尺度因子", [
+              "大尺度均匀各向同性下，物理距离写为 r(t)=R(t)χ。",
+              "χ 是共动坐标，不随膨胀变化。",
+              "对时间求导：v=dr/dt=Ṙχ=(Ṙ/R)r。",
+              "与 v=Hr 比较得到 H=Ṙ/R。"
+            ], [
+              "这把观测到的哈勃关系转化为尺度因子的动力学。",
+              "后面所有热史都以 R(t) 为背景。",
+              "视频里从天文观测导入，就是为了说明这个变量的物理来源。"
+            ], "先写 r=Rχ，再得到 H=Ṙ/R。"),
+            step("Friedmann 方程", [
+              "第一 Friedmann 方程：H<sup>2</sup>=(8πG/3)ρ-k/R<sup>2</sup>+Λ/3。",
+              "加速度方程：R̈/R=-(4πG/3)(ρ+3p)+Λ/3。",
+              "早期宇宙常先取平直且忽略 Λ，于是 H<sup>2</sup>≈(8πG/3)ρ。"
+            ], [
+              "ρ 是所有组分的总能量密度。",
+              "压力也参与引力源项，所以加速度方程里有 ρ+3p。",
+              "辐射、物质、真空能的差别体现在 p 与 ρ 的关系。"
+            ], "写出两条方程，再说明近似条件。"),
+            step("连续性方程的热力学推导", [
+              "取一个共动体积 V∝R<sup>3</sup>。",
+              "总能量为 E=ρV=ρR<sup>3</sup>。",
+              "绝热膨胀满足 dE=-p dV。",
+              "因此 d(ρR<sup>3</sup>)=-p d(R<sup>3</sup>)。",
+              "展开并除以 R<sup>3</sup>dt，得到 ρ̇+3H(ρ+p)=0。"
+            ], [
+              "这一步把统计热力学和宇宙膨胀直接接起来。",
+              "膨胀做功会降低能量密度。",
+              "这不是能量凭空消失，而是广义相对论背景下的局域守恒表达。"
+            ], "视频板书这一段很关键，最好完整写。"),
+            step("状态方程给出密度标度", [
+              "设 p=wρ。",
+              "连续性方程变为 ρ̇+3Hρ(1+w)=0。",
+              "写成 dρ/ρ=-3(1+w)dR/R。",
+              "积分得到 ρ∝R<sup>-3(1+w)</sup>。"
+            ], [
+              "非相对论物质 w=0，所以 ρ<sub>m</sub>∝R<sup>-3</sup>。",
+              "辐射 w=1/3，所以 ρ<sub>r</sub>∝R<sup>-4</sup>，多出的 R<sup>-1</sup> 来自光子红移。",
+              "真空能 w=-1，所以 ρ<sub>Λ</sub> 为常数。"
+            ], "标度关系是后面温度和退耦计算的基础。"),
+            step("辐射主导下的时间与温度", [
+              "辐射主导时 ρ∝R<sup>-4</sup>，Friedmann 方程给 (Ṙ/R)<sup>2</sup>∝R<sup>-4</sup>。",
+              "因此 Ṙ∝R<sup>-1</sup>，积分得 R∝t<sup>1/2</sup>。",
+              "光子波长 λ∝R，能量 E∝1/R，黑体温度 T∝1/R。",
+              "于是辐射主导时期 T∝t<sup>-1/2</sup>。"
+            ], [
+              "温度可以作为早期宇宙的时钟。",
+              "粒子反应率随 T 变，膨胀率也随 T 变。",
+              "这为 Γ 与 H 的比较做准备。"
+            ], "写出 R∝t<sup>1/2</sup> 和 T∝1/R。")
+          ]),
+          topic("decouple", "粒子退耦", "20260622 视频", "反应率和膨胀率竞争", "Γ=n⟨σv⟩", [
+            step("微观反应率", [
+              "单个粒子单位时间碰撞或反应的次数为 Γ=n⟨σv⟩。",
+              "n 是靶粒子数密度，σ 是截面，v 是相对速度。",
+              "相对论热平衡粒子通常 n∝T<sup>3</sup>。"
+            ], [
+              "早期宇宙温度高、密度高，反应通常足够频繁。",
+              "随着膨胀，n 下降，Γ 会下降。",
+              "这就是热平衡可能失效的微观原因。"
+            ], "退耦题第一行通常写 Γ=n⟨σv⟩。"),
+            step("背景变化率", [
+              "宇宙膨胀率 H=Ṙ/R。",
+              "背景显著变化的时间尺度为 t<sub>exp</sub>≈H<sup>-1</sup>。",
+              "微观热化时间尺度为 t<sub>int</sub>≈Γ<sup>-1</sup>。"
+            ], [
+              "如果 t<sub>int</sub> 远小于 t<sub>exp</sub>，粒子来得及反复碰撞并保持热平衡。",
+              "如果 t<sub>int</sub> 大于 t<sub>exp</sub>，宇宙已经膨胀冷却，反应来不及恢复平衡。",
+              "视频中大量数量级估算就是围绕这两个时间尺度。"
+            ], "把 Γ 和 H 说成时间尺度比较，物理含义更清楚。"),
+            step("退耦条件", [
+              "Γ≫H：反应快于膨胀，保持热平衡。",
+              "Γ≈H：退耦或冻结发生。",
+              "Γ≪H：反应停止有效进行，共动丰度冻结。",
+              "退耦温度 T<sub>d</sub> 常由 Γ(T<sub>d</sub>)=H(T<sub>d</sub>) 估算。"
+            ], [
+              "退耦不是瞬间开关，而是数量级交叉。",
+              "交叉之后物理数密度仍随 R<sup>-3</sup> 稀释。",
+              "真正近似守恒的是共动粒子数 nR<sup>3</sup>。"
+            ], "写“Γ≈H”比只写“碰撞停止”更准确。"),
+            step("弱相互作用退耦估算", [
+              "弱相互作用截面量级为 ⟨σv⟩∼G<sub>F</sub><sup>2</sup>T<sup>2</sup>。",
+              "相对论粒子数密度 n∼T<sup>3</sup>。",
+              "所以 Γ∼G<sub>F</sub><sup>2</sup>T<sup>5</sup>。",
+              "辐射主导 H≈1.66g<sub>*</sub><sup>1/2</sup>T<sup>2</sup>/M<sub>Pl</sub>。",
+              "令 Γ=H，得 T<sub>d</sub><sup>3</sup>∼1/(G<sub>F</sub><sup>2</sup>M<sub>Pl</sub>)。"
+            ], [
+              "Γ 随 T<sup>5</sup> 降低，比 H 的 T<sup>2</sup> 降得更快。",
+              "所以温度降低后弱反应必然跟不上膨胀。",
+              "中微子退耦和弱相互作用冻结都用这个结构估算。"
+            ], "记住 Γ∼T<sup>5</sup>，H∼T<sup>2</sup>。"),
+            step("冻结后分布的演化", [
+              "退耦后若粒子相对论，动量随红移 p∝R<sup>-1</sup>。",
+              "分布函数沿自由流保持形状，可定义 T<sub>dec</sub>∝R<sup>-1</sup>。",
+              "若之后其他粒子湮灭加热光子，退耦粒子的温度可低于光子温度。"
+            ], [
+              "中微子温度低于光子温度就是这种自由流和光子加热共同作用的结果。",
+              "暗物质热冻结也遵循“先平衡、后冻结、共动丰度保留”的逻辑。",
+              "统计力学分布函数在宇宙学中不是静态公式，而是随背景演化。"
+            ], "退耦后不是温度完全没有意义，而是与热浴脱钩。")
+          ]),
+          topic("cmbbbn", "CMB 与核合成", "20260624 视频", "Saha 复合、光子退耦、氦丰度估算", "Y<sub>p</sub>≈2r/(1+r)", [
+            step("复合反应和平衡条件", [
+              "复合反应为 p+e↔H+γ。",
+              "化学平衡要求 μ<sub>p</sub>+μ<sub>e</sub>=μ<sub>H</sub>。",
+              "非相对论稀薄气体数密度满足 n<sub>i</sub>=g<sub>i</sub>(m<sub>i</sub>T/2πℏ<sup>2</sup>)<sup>3/2</sup>e<sup>(μ<sub>i</sub>-m<sub>i</sub>)/T</sup>。"
+            ], [
+              "复合不是核反应，而是电子与质子形成中性氢。",
+              "高能光子尾巴会电离氢，因此复合温度远低于 13.6 eV。",
+              "Saha 方程就是把化学势平衡代入数密度公式。"
+            ], "先写 μ<sub>p</sub>+μ<sub>e</sub>=μ<sub>H</sub>。"),
+            step("Saha 方程", [
+              "利用 m<sub>p</sub>+m<sub>e</sub>-m<sub>H</sub>=B，其中 B=13.6 eV。",
+              "可得 n<sub>e</sub>n<sub>p</sub>/n<sub>H</sub>≈(m<sub>e</sub>T/2πℏ<sup>2</sup>)<sup>3/2</sup>e<sup>-B/T</sup>。",
+              "令电离度 x<sub>e</sub>=n<sub>e</sub>/n<sub>b</sub>，且 n<sub>p</sub>≈n<sub>e</sub>，得到 x<sub>e</sub><sup>2</sup>/(1-x<sub>e</sub>)≈(1/n<sub>b</sub>)(m<sub>e</sub>T/2πℏ<sup>2</sup>)<sup>3/2</sup>e<sup>-B/T</sup>。"
+            ], [
+              "指数项来自氢原子束缚能。",
+              "n<sub>b</sub> 很小而光子很多，使复合被高能光子尾巴推迟。",
+              "这正是视频里用数量级说明 CMB 释放时刻的关键。"
+            ], "不要只写“温度低就复合”，要写 Saha 比例。"),
+            step("光子退耦与 CMB", [
+              "光子主要通过 Thomson 散射与自由电子耦合。",
+              "散射率 Γ<sub>γ</sub>=n<sub>e</sub>σ<sub>T</sub>c。",
+              "复合后 n<sub>e</sub> 急剧下降，Γ<sub>γ</sub> 也下降。",
+              "当 Γ<sub>γ</sub>≈H 时，光子退耦并自由传播，形成 CMB。"
+            ], [
+              "CMB 不是太阳光背景，而是最后散射面释放的热辐射。",
+              "退耦后光子波长随 R 增大，黑体温度按 T∝1/R 下降。",
+              "今天的 2.7 K CMB 保留了早期热平衡的痕迹。"
+            ], "复合降低 n<sub>e</sub>，n<sub>e</sub> 降低导致光子退耦。"),
+            step("中子质子比的冻结", [
+              "弱反应维持 n↔p 转换，例如 n+ν<sub>e</sub>↔p+e<sup>-</sup>。",
+              "平衡时 n<sub>n</sub>/n<sub>p</sub>=e<sup>-(m<sub>n</sub>-m<sub>p</sub>)/T</sup>。",
+              "Δm=m<sub>n</sub>-m<sub>p</sub>≈1.29 MeV。",
+              "当弱反应 Γ<sub>w</sub>≈H 后，n/p 比冻结。"
+            ], [
+              "中子较重，因此温度下降时平衡中子比例降低。",
+              "冻结以后比例不再能快速跟随平衡值。",
+              "从冻结到核合成开始之间，自由中子还会衰变。"
+            ], "n/p 的 Boltzmann 因子是 BBN 丰度估算第一步。"),
+            step("氘瓶颈和 He-4 丰度", [
+              "核合成要先形成氘：p+n↔D+γ。",
+              "由于光子数远多于重子数，高能光子会光解氘，导致氘瓶颈。",
+              "温度进一步下降后，剩余中子几乎都进入 He-4。",
+              "设 r=n<sub>n</sub>/n<sub>p</sub>，每个 He-4 消耗两个中子，所以 n<sub>He</sub>=n<sub>n</sub>/2。",
+              "质量丰度 Y<sub>p</sub>=4n<sub>He</sub>/(n<sub>p</sub>+n<sub>n</sub>)=2r/(1+r)。"
+            ], [
+              "若 r≈1/7，则 Y<sub>p</sub>≈1/4。",
+              "这就是原初氦丰度约 25% 的经典估算。",
+              "这个推导把 Boltzmann 因子、反应冻结、衰变和核反应网络串起来。"
+            ], "最后的 Y<sub>p</sub>=2r/(1+r) 要会自己推出来。")
+          ])
+        ]
+      }
+    ];
+
+    function topic(id, label, exam, summary, core, steps) {
+      return { id, label, exam, summary, core, steps };
+    }
+    function step(title, formulas, notes, exam) {
+      return { title, formulas, notes, exam };
+    }
+
+    function App() {
+      const [catId, setCatId] = useState(DATA[0].id);
+      const [topicId, setTopicId] = useState(DATA[0].topics[0].id);
+      const [stepIndex, setStepIndex] = useState(0);
+      const [mode, setMode] = useState("derive");
+      const cat = useMemo(() => DATA.find(c => c.id === catId) || DATA[0], [catId]);
+      const topic = useMemo(() => cat.topics.find(t => t.id === topicId) || cat.topics[0], [cat, topicId]);
+      const activeStep = topic.steps[stepIndex] || topic.steps[0];
+
+      function selectCat(id) {
+        const next = DATA.find(c => c.id === id);
+        setCatId(id);
+        setTopicId(next.topics[0].id);
+        setStepIndex(0);
+      }
+      function selectTopic(id) {
+        setTopicId(id);
+        setStepIndex(0);
+      }
+      function selectStep(i) {
+        setStepIndex(i);
+        const el = document.getElementById("step-" + i);
+        if (el) setTimeout(() => el.scrollIntoView({ behavior: "smooth", block: "start" }), 0);
+      }
+      function nextTopic() {
+        const idx = cat.topics.findIndex(t => t.id === topic.id);
+        const next = cat.topics[(idx + 1) % cat.topics.length];
+        selectTopic(next.id);
+      }
+      const activeTitle = displayTitle(activeStep.title);
+
+      return React.createElement("div", { className: "site" },
+        React.createElement("section", { className: "hero" },
+          React.createElement("div", { className: "hero-image" }),
+          React.createElement("div", { className: "orbit-lines" }),
+          React.createElement("header", { className: "top-nav" },
+            React.createElement("nav", { className: "major-tabs" },
+              DATA.map(c => React.createElement("button", {
+                key: c.id,
+                className: "major-tab" + (c.id === cat.id ? " active" : ""),
+                onClick: () => selectCat(c.id)
+              }, c.name))
+            ),
+            React.createElement("nav", { className: "minor-tabs" },
+              cat.topics.map(t => React.createElement("button", {
+                key: t.id,
+                className: "minor-tab" + (t.id === topic.id ? " active" : ""),
+                onClick: () => selectTopic(t.id)
+              }, t.label))
+            )
+          ),
+          React.createElement("div", { className: "hero-content" },
+            React.createElement("div", { className: "hero-title" },
+              React.createElement("p", { className: "eyebrow" }, "Complete Derivation Review"),
+              React.createElement("h1", null, "高统完整推导站"),
+              React.createElement("p", null, "按考试要求重做：公式使用正常数学上下标排版；每个知识点从物理假设、约束、变分或求和开始，逐步推到考试可写结论。当前主题：" + topic.label + "。")
+            ),
+            React.createElement("aside", { className: "right-rail" },
+              React.createElement("div", { className: "timeline" },
+                topic.steps.map((s, i) => React.createElement("button", {
+                  key: s.title,
+                  className: "time-node" + (i === stepIndex ? " active" : ""),
+                  onClick: () => selectStep(i)
+                },
+                  React.createElement("span", { className: "dot" }),
+                  React.createElement("span", null, React.createElement("b", null, stepNo(i)), displayTitle(s.title))
+                ))
+              ),
+              React.createElement("div", { className: "info-card" },
+                React.createElement("h2", null, stepNo(stepIndex) + " " + activeTitle),
+                React.createElement("div", { className: "facts" },
+                  fact("主题", topic.label),
+                  fact("范围", topic.exam),
+                  fact("主公式", React.createElement("span", { dangerouslySetInnerHTML: { __html: topic.core } })),
+                  fact("当前", activeStep.exam)
+                ),
+                React.createElement("div", { className: "mode-tabs" },
+                  modeButton("derive", "完整推导", mode, setMode),
+                  modeButton("exam", "考试写法", mode, setMode),
+                  modeButton("notes", "易错解释", mode, setMode)
+                ),
+                React.createElement("button", { className: "next-button", onClick: nextTopic }, "下一站：" + nextTopicLabel(cat, topic))
+              )
+            )
+          )
+        ),
+        React.createElement("main", { className: "study-body" },
+          React.createElement("div", { className: "section-title" },
+            React.createElement("h2", null, topic.label + "：完整推导正文"),
+            React.createElement("p", null, topic.summary + "。下面每一步都保留公式和解释，不用代码块式下划线变量。")
+          ),
+          React.createElement("div", { className: "detail-layout" },
+            React.createElement("aside", { className: "toc-panel" },
+              React.createElement("div", { className: "toc-title" }, "目录"),
+              React.createElement("div", { className: "toc-list" },
+                topic.steps.map((s, i) => React.createElement("button", {
+                  key: s.title,
+                  className: "toc-button" + (i === stepIndex ? " active" : ""),
+                  onClick: () => selectStep(i)
+                },
+                  React.createElement("b", null, stepNo(i)),
+                  React.createElement("span", null, React.createElement("strong", null, displayTitle(s.title)), React.createElement("span", null, s.exam))
+                ))
+              ),
+              React.createElement("div", { className: "source-strip" }, "内容整合自：考试要求、课程笔记 PDF、系综理论与真题 PDF、旧学习站 index，以及 20260615/17/22/24 视频关键帧。")
+            ),
+            React.createElement("article", { className: "derivation-panel" },
+              topic.steps.map((s, i) => React.createElement("section", {
+                  className: "step-card" + (i === stepIndex ? " active" : ""),
+                  id: "step-" + i,
+                  key: s.title,
+                  onMouseEnter: () => setStepIndex(i)
+                },
+                React.createElement("div", { className: "step-heading" },
+                  React.createElement("span", { className: "step-badge" }, stepNo(i)),
+                  React.createElement("h3", null, displayTitle(s.title))
+                ),
+                React.createElement("ul", { className: "formula-list" },
+                  s.formulas.map((f, idx) => React.createElement("li", { key: idx, className: "formula", dangerouslySetInnerHTML: { __html: f } }))
+                ),
+                React.createElement("div", { className: "explain-grid" },
+                  React.createElement("div", { className: "note-box" },
+                    React.createElement("h4", null, "逐步解释"),
+                    React.createElement("ul", null, s.notes.map((n, idx) => React.createElement("li", { key: idx, dangerouslySetInnerHTML: { __html: n } })))
+                  ),
+                  React.createElement("div", { className: "note-box exam" },
+                    React.createElement("h4", null, "考试写法 / 易错点"),
+                    React.createElement("p", { dangerouslySetInnerHTML: { __html: s.exam } })
+                  )
+                )
+              ))
+            )
+          )
+        )
+      );
+    }
+
+    function fact(label, value) {
+      return React.createElement("div", { className: "fact" },
+        React.createElement("span", null, label),
+        typeof value === "string" ? React.createElement("span", null, value) : value
+      );
+    }
+    function modeButton(id, label, mode, setMode) {
+      return React.createElement("button", {
+        className: "mode-tab" + (mode === id ? " active" : ""),
+        onClick: () => setMode(id)
+      }, label);
+    }
+    function stepNo(i) {
+      return String(i + 1).padStart(2, "0");
+    }
+    function displayTitle(title) {
+      return String(title).replace(/^\s*\d{1,2}\s+/, "");
+    }
+    function nextTopicLabel(cat, topic) {
+      const idx = cat.topics.findIndex(t => t.id === topic.id);
+      return cat.topics[(idx + 1) % cat.topics.length].label;
+    }
+
+    ReactDOM.createRoot(document.getElementById("root")).render(React.createElement(App));
+  </script>
+</body>
+</html>
