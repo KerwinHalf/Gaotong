@@ -432,17 +432,60 @@
     .formula {
       display: block;
       border: 1px solid rgba(255,255,255,.13);
-      border-radius: 14px;
-      padding: 15px 17px;
+      border-radius: 12px;
+      padding: 0;
       background: rgba(255,255,255,.065);
       color: rgba(255,246,222,.92);
       font-family: "Cambria Math", "Times New Roman", "Noto Serif SC", serif;
       font-size: 19px;
       line-height: 1.8;
+      overflow: hidden;
       overflow-wrap: anywhere;
     }
     .formula sub,
     .formula sup { line-height: 0; }
+    .formula .eq {
+      position: relative;
+      display: block;
+      min-height: 74px;
+      padding: 18px 22px 16px 52px;
+      border-top: 1px solid rgba(255,255,255,.18);
+      border-bottom: 1px solid rgba(255,255,255,.18);
+      color: rgba(255,246,222,.98);
+      text-align: center;
+      font-size: clamp(20px, 2.2vw, 28px);
+      line-height: 1.55;
+    }
+    .formula .eq .MathJax {
+      margin: 0 auto !important;
+      font-size: 112% !important;
+    }
+    .formula .why {
+      display: block;
+      padding: 12px 17px 14px;
+      color: rgba(212,210,202,.78);
+      font-family: var(--sans);
+      font-size: 14px;
+      line-height: 1.75;
+      text-align: left;
+    }
+    .formula .mini {
+      position: absolute;
+      left: 16px;
+      top: 18px;
+      color: var(--gold);
+      font-family: var(--sans);
+      font-size: 13px;
+      font-weight: 800;
+      margin-right: 0;
+    }
+    .formula .math-tex {
+      display: block;
+      width: 100%;
+    }
+    .formula mjx-container[jax="CHTML"][display="true"] {
+      margin: 0 !important;
+    }
     .explain-grid {
       display: grid;
       grid-template-columns: minmax(0,1fr) minmax(0, .95fr);
@@ -517,16 +560,45 @@
       .section-title { display: block; }
       .section-title p { margin-top: 10px; }
       .formula { font-size: 17px; }
+      .formula .eq {
+        min-height: 60px;
+        padding: 14px 12px 12px 42px;
+        font-size: 20px;
+      }
+      .formula .mini {
+        left: 12px;
+        top: 14px;
+      }
     }
   </style>
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [["\\(", "\\)"]],
+        displayMath: [["\\[", "\\]"]],
+        processEscapes: true
+      },
+      chtml: {
+        scale: 1,
+        displayAlign: "center"
+      },
+      startup: {
+        typeset: false
+      }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
 </head>
 <body>
   <div id="root"></div>
   <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
   <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-  <script src="./expanded-content_1.js"></script>
+  <script src="./expanded-content.js"></script>
+  <script src="./deep-overrides.js"></script>
+  <script src="./lecture-1-127-overrides.js"></script>
+  <script src="./source-derivations-overrides.js"></script>
   <script>
-    const { useMemo, useState } = React;
+    const { useEffect, useMemo, useState } = React;
 
     const DATA = window.EXPANDED_DATA || [
       {
@@ -1048,13 +1120,23 @@
     }
 
     function App() {
-      const [catId, setCatId] = useState(DATA[0].id);
-      const [topicId, setTopicId] = useState(DATA[0].topics[0].id);
+      const initial = initialSelection();
+      const [catId, setCatId] = useState(initial.catId);
+      const [topicId, setTopicId] = useState(initial.topicId);
       const [stepIndex, setStepIndex] = useState(0);
       const [mode, setMode] = useState("derive");
       const cat = useMemo(() => DATA.find(c => c.id === catId) || DATA[0], [catId]);
       const topic = useMemo(() => cat.topics.find(t => t.id === topicId) || cat.topics[0], [cat, topicId]);
       const activeStep = topic.steps[stepIndex] || topic.steps[0];
+
+      useEffect(() => {
+        const timer = window.setTimeout(() => {
+          if (window.MathJax && window.MathJax.typesetPromise) {
+            window.MathJax.typesetPromise([document.getElementById("root")]).catch(() => {});
+          }
+        }, 0);
+        return () => window.clearTimeout(timer);
+      }, [catId, topicId, stepIndex, mode]);
 
       function selectCat(id) {
         const next = DATA.find(c => c.id === id);
@@ -1201,6 +1283,15 @@
     }
     function displayTitle(title) {
       return String(title).replace(/^\s*\d{1,2}\s+/, "");
+    }
+    function initialSelection() {
+      const raw = decodeURIComponent((window.location.hash || "").replace(/^#/, ""));
+      for (const section of DATA) {
+        if (section.id === raw) return { catId: section.id, topicId: section.topics[0].id };
+        const topic = section.topics.find((item) => item.id === raw);
+        if (topic) return { catId: section.id, topicId: topic.id };
+      }
+      return { catId: DATA[0].id, topicId: DATA[0].topics[0].id };
     }
     function nextTopicLabel(cat, topic) {
       const idx = cat.topics.findIndex(t => t.id === topic.id);

@@ -511,434 +511,77 @@
           ], "高温极限必须说明 e<sup>x</sup>-1≈x。")
         ]),
 
-        T("emfield", "电磁场/黑体/相干态", "考试要求 10-12", "Maxwell 方程、库伦规范、微元法量子化、电磁场谐振子、黑体辐射与相干态完整链条", "H=Σ<sub>k,λ</sub>ℏω<sub>k</sub>(a<sup>†</sup>a+1/2)", [
-          S("01 单位制先说清：为什么有时写 c、有时写 ε₀、μ₀", [
-              "在 SI 制中：u = (1/2)[ε<sub>0</sub>E<sup>2</sup> + B<sup>2</sup>/μ<sub>0</sub>]，H = ∫u d<sup>3</sup>r。",
-              "在高斯制中：u = (E<sup>2</sup> + B<sup>2</sup>)/(8π)，H = (1/8π)∫(E<sup>2</sup>+B<sup>2</sup>)d<sup>3</sup>r。",
-              "SI 制真空光速：c<sup>2</sup> = 1/(ε<sub>0</sub>μ<sub>0</sub>)。",
-              "高斯制 Lorentz 力：F = q[E + (v/c)×B]，所以 E 和 B 量纲相同。"
-            ], [
-              "你的笔记里有时出现 1/c，有时出现 ε<sub>0</sub>、μ<sub>0</sub>，不是物理变了，是单位制换了。",
-              "后面为了和量子光学常见写法一致，主推导用 SI 制；若老师板书用高斯制，只要把系数换掉，结构完全相同。",
-              "考试时先声明单位制，别让系数问题把真正的推导淹死。"
-            ], "先说明单位制；重点不是系数，而是 H 最终化成谐振子。"),
-          S("02 无源真空 Maxwell 方程", [
-              "无源真空：ρ = 0，J = 0。",
-              "∇·E = 0。",
-              "∇·B = 0。",
-              "∇×E = -∂B/∂t。",
-              "∇×B = μ<sub>0</sub>ε<sub>0</sub>∂E/∂t = (1/c<sup>2</sup>)∂E/∂t。"
-            ], [
-              "散度方程说有没有源头：真空里没有电荷，所以 E 没有源；磁单极没有，所以 B 也没有源。",
-              "旋度方程说互相生成：变化的 B 产生旋转的 E，变化的 E 产生旋转的 B。",
-              "电磁波能够自己传播，就是因为后两条方程互相喂养，够离谱，但宇宙就这么干。"
-            ], "真空 Maxwell 方程要完整写四条，后面所有推导从这里出发。"),
-          S("03 由 ∇·B = 0 引入矢势 A", [
-              "数学恒等式：∇·(∇×A) = 0。",
-              "Maxwell 方程给出：∇·B = 0。",
-              "因此可以把磁场写成：B = ∇×A。",
-              "积分形式：∫<sub>S</sub>B·dS = ∫<sub>S</sub>(∇×A)·dS = ∮<sub>∂S</sub>A·dl。"
-            ], [
-              "任意旋度场都无散度；既然 B 无散度，就可以用某个矢量场 A 的旋度表示它。",
-              "积分形式来自 Stokes 定理：A 沿闭合边界绕一圈的环流，等于穿过该边界围成面的磁通量。",
-              "A 不是直接可见的磁场，但它是后面写 Hamiltonian 和量子化的核心变量。"
-            ], "记住 B=∇×A，以及 ∮A·dl = 磁通量。"),
-          S("04 由 Faraday 方程推出 E 与 A、φ 的关系", [
-              "Faraday 方程：∇×E = -∂B/∂t。",
-              "代入 B = ∇×A：∇×E = -∂(∇×A)/∂t。",
-              "时间导数与空间旋度可交换：∂(∇×A)/∂t = ∇×(∂A/∂t)。",
-              "所以：∇×E = ∇×(-∂A/∂t)。",
-              "移到一边：∇×[E + ∂A/∂t] = 0。",
-              "若某个矢量场旋度为零，则可写成标势梯度：E + ∂A/∂t = -∇φ。",
-              "最终：E = -∂A/∂t - ∇φ。"
-            ], [
-              "这一步别跳。先代入 B=∇×A，再把时间导数拉进旋度，最后才得到旋度为零。",
-              "φ 是标势，∇φ 表示纵向电场部分；自由辐射场里后面会把它消掉。",
-              "如果用高斯制，公式变成 E = -(1/c)∂A/∂t - ∇φ，本质一样。"
-            ], "先写 B=∇×A，再从 Faraday 方程推出 E=-∂A/∂t-∇φ。"),
-          S("05 A 的规范自由度：为什么还要选库伦规范", [
-              "做变换：A′ = A + ∇χ。",
-              "对应磁场：B′ = ∇×A′ = ∇×A + ∇×∇χ。",
-              "因为 ∇×∇χ = 0，所以 B′ = B。",
-              "若同时令 φ′ = φ - ∂χ/∂t，则 E′ = -∂A′/∂t - ∇φ′ = E。"
-            ], [
-              "A 和 φ 不是唯一的，同一个真实 E、B 可以由许多 A、φ 表示。",
-              "这不是物理多了一堆新自由度，而是描述方式有冗余。",
-              "为了量子化，必须先选一个规范，不然会把非物理自由度也拿去量子化，堪称自找麻烦。"
-            ], "规范变换不改变 E、B；所以要选规范去掉冗余。"),
-          S("06 库伦规范：∇·A = 0，并在无源场中取 φ = 0", [
-              "库伦规范条件：∇·A = 0。",
-              "无源 Maxwell 方程：∇·E = 0。",
-              "代入 E = -∂A/∂t - ∇φ：∇·E = -∂(∇·A)/∂t - ∇<sup>2</sup>φ = 0。",
-              "由 ∇·A = 0 得：∇<sup>2</sup>φ = 0。",
-              "对自由辐射场，通常取无边界静电势：φ = 0。",
-              "于是：E = -∂A/∂t，B = ∇×A，∇·A = 0。"
-            ], [
-              "库伦规范的物理作用是只保留横向场。",
-              "自由电磁波没有电荷源，纵向静电势不参与辐射场量子化，所以可取 φ=0。",
-              "最后这三条关系就是你笔记里后续推导的钥匙。"
-            ], "库伦规范下必须记：E=-∂A/∂t，B=∇×A，∇·A=0。"),
-          S("07 从 Maxwell 方程推出 A 的波动方程", [
-              "使用 Maxwell：∇×B = (1/c<sup>2</sup>)∂E/∂t。",
-              "代入 B=∇×A，E=-∂A/∂t。",
-              "左边：∇×B = ∇×(∇×A)。",
-              "矢量恒等式：∇×(∇×A)=∇(∇·A)-∇<sup>2</sup>A。",
-              "库伦规范 ∇·A=0，所以左边 = -∇<sup>2</sup>A。",
-              "右边：(1/c<sup>2</sup>)∂E/∂t = -(1/c<sup>2</sup>)∂<sup>2</sup>A/∂t<sup>2</sup>。",
-              "因此：-∇<sup>2</sup>A = -(1/c<sup>2</sup>)∂<sup>2</sup>A/∂t<sup>2</sup>。",
-              "最终：∇<sup>2</sup>A - (1/c<sup>2</sup>)∂<sup>2</sup>A/∂t<sup>2</sup> = 0。"
-            ], [
-              "这说明 A 本身满足波动方程，传播速度为 c。",
-              "从这一刻开始，A 就可以像格波位移一样分解成一堆正常模式。",
-              "如果不选库伦规范，∇(∇·A) 这一项不会消失，推导会被规范冗余拖进泥坑。"
-            ], "完整写出矢量恒等式，再用 ∇·A=0 消掉第一项。"),
-          S("08 平面波解和色散关系 ω = ck", [
-              "设 A(r,t)=A<sub>k</sub>e<sup>i(k·r-ωt)</sup>。",
-              "空间 Laplace：∇<sup>2</sup>A = -k<sup>2</sup>A。",
-              "时间二阶导：∂<sup>2</sup>A/∂t<sup>2</sup> = -ω<sup>2</sup>A。",
-              "代入波动方程：-k<sup>2</sup>A + (ω<sup>2</sup>/c<sup>2</sup>)A = 0。",
-              "非零解要求：ω<sup>2</sup> = c<sup>2</sup>k<sup>2</sup>。",
-              "所以：ω = c|k|。"
-            ], [
-              "色散关系告诉你每个 k 模式的频率。",
-              "电磁波在真空中线性色散，和长波声学声子 ω=v<sub>s</sub>k 很像，只不过速度从声速变成光速。",
-              "这就是老师说电磁场量子化可以借用格波量子化的原因之一。"
-            ], "必须写出代入平面波后得到 ω=ck。"),
-          S("09 横向条件与两个偏振", [
-              "库伦规范：∇·A=0。",
-              "对平面波 A=A<sub>k</sub>e<sup>i(k·r-ωt)</sup>，有 ∇·A = i k·A<sub>k</sub>e<sup>i(k·r-ωt)</sup>。",
-              "因此：k·A<sub>k</sub> = 0。",
-              "所以 A<sub>k</sub> 必须垂直于传播方向 k。",
-              "对每个 k，垂直平面中有两个独立偏振 e<sub>k1</sub>、e<sub>k2</sub>。",
-              "正交归一：e<sub>kλ</sub>·e<sub>kλ′</sub>=δ<sub>λλ′</sub>，且 k·e<sub>kλ</sub>=0。"
-            ], [
-              "光子不是 3 个偏振，而是 2 个横向偏振。纵向自由度被库伦规范和无源条件去掉。",
-              "偏振 λ 是光子态标签的一部分；同一个光子模式要 k 和 λ 都相同。",
-              "这一步解释了黑体 DOS 中为什么有因子 2。"
-            ], "光子态标签是 (k,λ)，其中 λ=1,2。"),
-          S("10 为了让 A 是实场，必须同时写 k 和 -k", [
-              "真实电磁场要求 A(r,t) 为实函数。",
-              "单个复指数 e<sup>i(k·r-ωt)</sup> 本身是复数。",
-              "因此要把共轭项一起加上：A(r,t) ∼ A<sub>k</sub>e<sup>i(k·r-ωt)</sup> + A<sub>k</sub><sup>*</sup>e<sup>-i(k·r-ωt)</sup>。",
-              "等价地可以写成实部：A(r,t)=Re[A<sub>k</sub>e<sup>i(k·r-ωt)</sup>]。",
-              "Fourier 系数满足现实条件：A<sub>-k</sub>=A<sub>k</sub><sup>*</sup>。"
-            ], [
-              "你笔记里反复写 A<sub>k</sub> 和 A<sub>k</sub><sup>*</sup>，就是为了保证场是实的。",
-              "复指数只是数学工具，真正的物理场必须是实场。",
-              "后面量子化后，a 和 a<sup>†</sup> 也会成对出现，理由类似。"
-            ], "看到 + 共轭项，不要慌，它是在保证 A(r,t) 为实数。"),
-          S("11 电磁场 Hamiltonian：把 E、B 换成 A", [
-              "场能量密度：u = (1/2)[ε<sub>0</sub>E<sup>2</sup> + B<sup>2</sup>/μ<sub>0</sub>]。",
-              "总 Hamiltonian：H = (1/2)∫d<sup>3</sup>r[ε<sub>0</sub>E<sup>2</sup> + B<sup>2</sup>/μ<sub>0</sub>]。",
-              "库伦规范自由场：E=-∂A/∂t，B=∇×A。",
-              "代入：H = (1/2)∫d<sup>3</sup>r[ε<sub>0</sub>(∂A/∂t)<sup>2</sup> + (∇×A)<sup>2</sup>/μ<sub>0</sub>]。"
-            ], [
-              "第一项是时间变化平方，像动能。",
-              "第二项是空间变化平方，像弹簧势能。",
-              "这就是 A 和格波位移 x 相似的真正原因，不是因为真空里有小弹簧。"
-            ], "从 H=∫u d<sup>3</sup>r 出发，代入 E=-∂A/∂t、B=∇×A。"),
-          S("12 微元法：把连续空间切成一维小格子", [
-              "取一个最简单的单偏振波：波沿 x 方向传播，A 只有 y 分量。",
-              "写作：A(r,t)=A<sub>y</sub>(x,t)e<sub>y</sub>。",
-              "于是：E<sub>y</sub>=-∂A<sub>y</sub>/∂t。",
-              "磁场：B=∇×A，只有 B<sub>z</sub>=∂A<sub>y</sub>/∂x。",
-              "把 x 方向分成格距 a 的小格子，x<sub>n</sub>=na。",
-              "定义 A<sub>n</sub>(t)=A<sub>y</sub>(x<sub>n</sub>,t)。"
-            ], [
-              "这一步只是为了看清结构，真实电磁场还有另一个偏振和三维 k。",
-              "A<sub>n</sub> 是第 n 个空间微元上的矢势值，扮演原子链位移 x<sub>n</sub> 的角色。",
-              "老师说“电磁场跟格波一样”，讲的就是从这里开始的结构相同。"
-            ], "选单偏振、单传播方向，把 A(r,t) 变成格点变量 A<sub>n</sub>(t)。"),
-          S("13 离散后：E 像速度，B 像相邻格点差分", [
-              "时间导数：E<sub>n</sub> = -dA<sub>n</sub>/dt = -Ȧ<sub>n</sub>。",
-              "空间导数近似为差分：∂A<sub>y</sub>/∂x ≈ (A<sub>n</sub>-A<sub>n-1</sub>)/a。",
-              "所以：B<sub>n</sub> ≈ (A<sub>n</sub>-A<sub>n-1</sub>)/a。",
-              "微元体积：V<sub>cell</sub>=a·S，其中 S 是横截面积。"
-            ], [
-              "E 由 A 的时间变化给出，所以 E<sup>2</sup> 项像速度平方。",
-              "B 由 A 的空间变化给出，所以 B<sup>2</sup> 项像相邻格点位移差平方。",
-              "这一步就是电磁场 Hamiltonian 变成一维弹簧链 Hamiltonian 的物理桥梁。"
-            ], "核心对应：A<sub>n</sub>↔x<sub>n</sub>，E<sub>n</sub>↔-ẋ<sub>n</sub>，B<sub>n</sub>↔(x<sub>n</sub>-x<sub>n-1</sub>)/a。"),
-          S("14 写成一维原子链形式", [
-              "离散能量：H ≈ Σ<sub>n</sub>V<sub>cell</sub>{(1/2)ε<sub>0</sub>Ȧ<sub>n</sub><sup>2</sup> + (1/2μ<sub>0</sub>a<sup>2</sup>)(A<sub>n</sub>-A<sub>n-1</sub>)<sup>2</sup>}。",
-              "把它和原子链 H = Σ<sub>n</sub>[(1/2)Mẋ<sub>n</sub><sup>2</sup> + (1/2)K(x<sub>n</sub>-x<sub>n-1</sub>)<sup>2</sup>] 对比。",
-              "对应关系：x<sub>n</sub> ↔ A<sub>n</sub>。",
-              "等效质量：M = V<sub>cell</sub>ε<sub>0</sub>。",
-              "等效弹簧常数：K = V<sub>cell</sub>/(μ<sub>0</sub>a<sup>2</sup>)。"
-            ], [
-              "这不是说 A 真有机械质量，而是数学形式等价。",
-              "只要 Hamiltonian 形式一样，后面的正常模分解和量子化方法就一样。",
-              "人类物理学最喜欢的操作：发现同一个数学结构，然后把旧解法搬过去。偶尔还挺有用。"
-            ], "必须写出 M=V<sub>cell</sub>ε<sub>0</sub> 和 K=V<sub>cell</sub>/(μ<sub>0</sub>a<sup>2</sup>) 的对应。"),
-          S("15 离散电磁链的色散关系", [
-              "原子链色散：ω<sub>k</sub>=2√(K/M)|sin(ka/2)|。",
-              "代入 K/M = [V<sub>cell</sub>/(μ<sub>0</sub>a<sup>2</sup>)]/[V<sub>cell</sub>ε<sub>0</sub>] = 1/(μ<sub>0</sub>ε<sub>0</sub>a<sup>2</sup>) = c<sup>2</sup>/a<sup>2</sup>。",
-              "所以：ω<sub>k</sub> = (2c/a)|sin(ka/2)|。",
-              "连续极限 a→0，sin(ka/2)≈ka/2。",
-              "于是：ω<sub>k</sub>≈ck。"
-            ], [
-              "离散微元模型只是辅助工具，最终要取连续极限。",
-              "在长波极限下，离散色散回到真正电磁波色散 ω=ck。",
-              "这一步把“像格波”推回了真实电磁波。"
-            ], "连续极限下必须得到 ω=ck，否则前面类比就没闭环。"),
-          S("16 Fourier 变换：把 Aₙ 变成正常模 Aₖ", [
-              "离散 Fourier 变换：A<sub>n</sub> = (1/√N)Σ<sub>k</sub>A<sub>k</sub>e<sup>ikna</sup>。",
-              "反变换：A<sub>k</sub> = (1/√N)Σ<sub>n</sub>A<sub>n</sub>e<sup>-ikna</sup>。",
-              "正交关系：Σ<sub>n</sub>e<sup>i(k-k′)na</sup> = Nδ<sub>kk′</sub>。",
-              "1/√N 的作用：保证变换前后归一化对称，Σ<sub>n</sub>|A<sub>n</sub>|<sup>2</sup>=Σ<sub>k</sub>|A<sub>k</sub>|<sup>2</sup>。"
-            ], [
-              "A<sub>n</sub> 是实空间每个微元上的场值，A<sub>k</sub> 是第 k 个波模式的振幅。",
-              "1/√N 不是神秘物理常数，只是为了让正变换和反变换各承担一半归一化。",
-              "Fourier 变换的作用是把相邻耦合的 A<sub>n</sub> 解耦成互不耦合的 k 模式。"
-            ], "1/√N 来自离散 Fourier 正交归一，不是随手写的。"),
-          S("17 Fourier 后 Hamiltonian 对角化", [
-              "离散链 Hamiltonian：H=Σ<sub>n</sub>[(1/2)MȦ<sub>n</sub><sup>2</sup>+(1/2)K(A<sub>n</sub>-A<sub>n-1</sub>)<sup>2</sup>]。",
-              "代入 A<sub>n</sub>=(1/√N)Σ<sub>k</sub>A<sub>k</sub>e<sup>ikna</sup>。",
-              "动能项由正交关系变成：Σ<sub>k</sub>(1/2)MȦ<sub>k</sub>Ȧ<sub>-k</sub>。",
-              "差分项给出因子 |1-e<sup>-ika</sup>|<sup>2</sup>=4sin<sup>2</sup>(ka/2)。",
-              "因此势能项变成：Σ<sub>k</sub>(1/2)Mω<sub>k</sub><sup>2</sup>A<sub>k</sub>A<sub>-k</sub>。",
-              "最终：H=Σ<sub>k</sub>[(1/2)MȦ<sub>k</sub>Ȧ<sub>-k</sub>+(1/2)Mω<sub>k</sub><sup>2</sup>A<sub>k</sub>A<sub>-k</sub>]。"
-            ], [
-              "这是正常模分解的核心：原来相邻格点之间耦合，变换后每个 k 独立。",
-              "每个 k 模式都是一个谐振子，频率就是 ω<sub>k</sub>。",
-              "声子、电磁场、很多场论推导，都是这同一招，宇宙懒得换剧本。"
-            ], "要写出差分项给 4sin²(ka/2)，这说明你不是只背结果。"),
-          S("18 定义正则坐标和正则动量", [
-              "对每个正常模，广义坐标可记为 Q<sub>k</sub>，广义动量 P<sub>k</sub>。",
-              "典型形式：H<sub>k</sub> = P<sub>k</sub>P<sub>-k</sub>/(2M) + (1/2)Mω<sub>k</sub><sup>2</sup>Q<sub>k</sub>Q<sub>-k</sub>。",
-              "正则量子化要求：[Q̂<sub>k</sub>, P̂<sub>k′</sub>] = iℏδ<sub>k,-k′</sub>。",
-              "若用实模式坐标，也可写成：[Q̂<sub>k</sub>, P̂<sub>k′</sub>] = iℏδ<sub>kk′</sub>。"
-            ], [
-              "复 Fourier 模式里 A<sub>-k</sub>=A<sub>k</sub><sup>*</sup>，所以常出现 k 与 -k 配对。",
-              "这就是笔记里 Q<sub>k</sub>Q<sub>-k</sub>、P<sub>k</sub>P<sub>-k</sub> 这些符号的来源。",
-              "本质上仍然是一堆普通谐振子，不是新物种。"
-            ], "要清楚复模式与 -k 配对，别把 A<sub>k</sub> 和 A<sub>-k</sub> 当成完全独立。"),
-          S("19 用产生湮灭算符表示每个谐振子", [
-              "单个谐振子标准定义：a = (1/√2)[√(Mω/ℏ) Q + i P/√(Mℏω)]。",
-              "a<sup>†</sup> = (1/√2)[√(Mω/ℏ) Q - i P/√(Mℏω)]。",
-              "反解：Q = √(ℏ/(2Mω))(a+a<sup>†</sup>)。",
-              "反解：P = -i√(Mℏω/2)(a-a<sup>†</sup>)。",
-              "对电磁模式，就是把 Q、P 替换为对应的 A<sub>k</sub> 和共轭动量。"
-            ], [
-              "这样定义的目的，是让 Hamiltonian 自动变成 ℏω(a<sup>†</sup>a+1/2)。",
-              "a 降低一个能量量子，a<sup>†</sup> 增加一个能量量子。",
-              "不要把 a 想成一个小球，它是操作量子态的算符。"
-            ], "产生湮灭算符的形式来自谐振子标准归一化。"),
-          S("20 量子化后的电磁场 Hamiltonian", [
-              "每个模式量子化后：H<sub>kλ</sub>=ℏω<sub>k</sub>(a<sub>kλ</sub><sup>†</sup>a<sub>kλ</sub>+1/2)。",
-              "总 Hamiltonian：H=Σ<sub>k,λ</sub>ℏω<sub>k</sub>(a<sub>kλ</sub><sup>†</sup>a<sub>kλ</sub>+1/2)。",
-              "定义光子数算符：N̂<sub>kλ</sub>=a<sub>kλ</sub><sup>†</sup>a<sub>kλ</sub>。",
-              "数态满足：N̂<sub>kλ</sub>|n<sub>kλ</sub>⟩ = n<sub>kλ</sub>|n<sub>kλ</sub>⟩。",
-              "该模式能量：E<sub>n</sub>=(n+1/2)ℏω<sub>k</sub>。"
-            ], [
-              "光子不是先假设出来的小颗粒，而是电磁场正常模量子化后的能级激发。",
-              "同一个模式被激发 n 份，就是这个模式里有 n 个光子。",
-              "1/2ℏω 是零点能；黑体热辐射通常只关心热激发部分 nℏω。"
-            ], "最终结论必须写 H=Σℏω(a<sup>†</sup>a+1/2)。"),
-          S("21 连续极限下的 Â(r) 场算符", [
-              "连续化后，把离散求和推广为所有 k 和两个偏振求和。",
-              "矢势算符常写为：Â(r,t)=Σ<sub>k,λ</sub>√[ℏ/(2ε<sub>0</sub>Vω<sub>k</sub>)] e<sub>kλ</sub>[a<sub>kλ</sub>e<sup>i(k·r-ωt)</sup> + a<sub>kλ</sub><sup>†</sup>e<sup>-i(k·r-ωt)</sup>]。",
-              "其中 V 是量子化体积，e<sub>kλ</sub> 是横向偏振矢量。",
-              "系数 √[ℏ/(2ε<sub>0</sub>Vω<sub>k</sub>)] 来自谐振子坐标 Q=√(ℏ/2Mω)(a+a<sup>†</sup>) 的连续场归一化。"
-            ], [
-              "这个式子就是电磁场版的位移算符展开。",
-              "a 项对应湮灭一个光子，a<sup>†</sup> 项对应产生一个光子。",
-              "二者同时出现，是为了保证 Â 是厄米算符，也就是可观测实场。"
-            ], "场算符必须含 a 和 a<sup>†</sup> 两项。"),
-          S("22 Ê 与 B̂ 的场算符", [
-              "由 E=-∂A/∂t，得到：Ê(r,t)=iΣ<sub>k,λ</sub>√[ℏω<sub>k</sub>/(2ε<sub>0</sub>V)] e<sub>kλ</sub>[a<sub>kλ</sub>e<sup>i(k·r-ωt)</sup> - a<sub>kλ</sub><sup>†</sup>e<sup>-i(k·r-ωt)</sup>]。",
-              "由 B=∇×A，得到：B̂(r,t)=iΣ<sub>k,λ</sub>√[ℏ/(2ε<sub>0</sub>Vω<sub>k</sub>)](k×e<sub>kλ</sub>)[a<sub>kλ</sub>e<sup>i(k·r-ωt)</sup> - a<sub>kλ</sub><sup>†</sup>e<sup>-i(k·r-ωt)</sup>]。",
-              "也可写成 B 的方向由 e<sub>B</sub> = e<sub>k</sub>×e<sub>E</sub> 决定。",
-              "E、B、k 三者相互垂直。"
-            ], [
-              "E 的系数比 A 多一个 ω，因为时间导数会带出 -iω。",
-              "B 的方向由 k×e 决定，所以磁场方向同时垂直于传播方向和电场偏振方向。",
-              "这正对应经典电磁波的横波图像。"
-            ], "从 Â 出发，用 E=-∂A/∂t、B=∇×A 得到 Ê、B̂。"),
-          S("23 光子态密度：从 k 空间数模式", [
-              "周期边界条件下，一个 k 态在 k 空间占体积 (2π/L)<sup>3</sup>。",
-              "所以 k 空间态密度为 V/(2π)<sup>3</sup>。",
-              "半径 k 到 k+dk 的球壳体积为 4πk<sup>2</sup>dk。",
-              "每个 k 有两个偏振，所以模式数：dN = 2·[V/(2π)<sup>3</sup>]·4πk<sup>2</sup>dk。",
-              "化简：dN = V k<sup>2</sup>dk/π<sup>2</sup>。"
-            ], [
-              "这一步和声子 DOS 很像，只是光子有两个偏振，而三维声学声子常有三支。",
-              "两个偏振因子一定要写进去，否则 Planck 公式系数会少一半。",
-              "DOS 的本质就是数 k 空间壳层里有多少模式。"
-            ], "光子 g<sub>s</sub>=2，不是 3。"),
-          S("24 从 k 态密度换到频率态密度", [
-              "真空光子色散：ω=ck。",
-              "所以 k=ω/c，dk=dω/c。",
-              "代入 dN = V k<sup>2</sup>dk/π<sup>2</sup>。",
-              "得到：g(ω)dω = dN = Vω<sup>2</sup>dω/(π<sup>2</sup>c<sup>3</sup>)。",
-              "因此单位体积频率态密度：g(ω)/V = ω<sup>2</sup>/(π<sup>2</sup>c<sup>3</sup>)。"
-            ], [
-              "g(ω)dω 表示频率在 ω 到 ω+dω 之间有多少个电磁模式。",
-              "它不是能量，只是模式数量。",
-              "后面要再乘单个光子能量 ℏω 和平均光子数。"
-            ], "黑体推导的三件套：DOS × ℏω × 平均占据数。"),
-          S("25 光子为什么玻色分布中 μ = 0", [
-              "一般玻色平均占据：n̄(ω)=1/[e<sup>β(ℏω-μ)</sup>-1]。",
-              "化学势 μ 的作用是控制守恒的粒子数。",
-              "黑体腔中热壁可以吸收光子，也可以放出光子。",
-              "所以光子总数不守恒。",
-              "因此平衡光子气的化学势：μ<sub>γ</sub>=0。",
-              "于是：n̄(ω)=1/[e<sup>βℏω</sup>-1]。"
-            ], [
-              "这和声子热容里的声子分布完全同理：声子数也不守恒，所以声子 μ=0。",
-              "不是没用玻色分布，而是用了 μ=0 的玻色分布。",
-              "别把光子当成固定粒子数的理想玻色气体，否则会硬塞一个不该有的 μ。"
-            ], "黑体辐射一定写 μ<sub>γ</sub>=0。"),
-          S("26 Planck 谱能量密度", [
-              "频率在 ω 到 ω+dω 内的单位体积能量为：u(ω)dω = [单位体积模式数] × [每个光子能量] × [平均光子数]。",
-              "单位体积模式数：ω<sup>2</sup>dω/(π<sup>2</sup>c<sup>3</sup>)。",
-              "每个光子能量：ℏω。",
-              "平均光子数：1/[e<sup>βℏω</sup>-1]。",
-              "所以：u(ω)dω = [ℏω<sup>3</sup>/(π<sup>2</sup>c<sup>3</sup>)]·dω/[e<sup>βℏω</sup>-1]。",
-              "即：u(ω)=ℏω<sup>3</sup>/(π<sup>2</sup>c<sup>3</sup>[e<sup>ℏω/(k<sub>B</sub>T)</sup>-1])。"
-            ], [
-              "谱能量密度不是单个光子的能量，而是某个频率段内所有模式、所有光子的能量密度。",
-              "低频模式单个光子能量小但占据多；高频单个能量大但占据少。",
-              "Planck 分布就是这三个因素竞争后的结果。"
-            ], "写出 u(ω)dω 的完整结构。"),
-          S("27 用普通频率 ν 写 Planck 公式", [
-              "角频率和普通频率关系：ω=2πν。",
-              "能量守恒换元：u(ω)dω = u(ν)dν。",
-              "dω = 2πdν。",
-              "由角频率公式换元后得到：u(ν)=8πhν<sup>3</sup>/[c<sup>3</sup>(e<sup>hν/(k<sub>B</sub>T)</sup>-1)]。"
-            ], [
-              "ω 版和 ν 版不要混用。",
-              "如果积分变量换了，谱密度函数本身也要跟着变，因为 u(ω)dω 才是真正物理量。",
-              "这就是很多同学系数差 2π 的灾难现场。"
-            ], "记住 u(ω)dω = u(ν)dν。"),
-          S("28 黑体总能量密度与 T⁴ 定律", [
-              "总能量密度：u(T)=∫<sub>0</sub><sup>∞</sup>u(ω)dω。",
-              "代入：u(T)=∫<sub>0</sub><sup>∞</sup>[ℏω<sup>3</sup>/(π<sup>2</sup>c<sup>3</sup>)] dω/[e<sup>ℏω/(k<sub>B</sub>T)</sup>-1]。",
-              "令 x=ℏω/(k<sub>B</sub>T)，则 ω=(k<sub>B</sub>T/ℏ)x，dω=(k<sub>B</sub>T/ℏ)dx。",
-              "于是：u(T)=(k<sub>B</sub>T)<sup>4</sup>/(π<sup>2</sup>c<sup>3</sup>ℏ<sup>3</sup>)∫<sub>0</sub><sup>∞</sup>x<sup>3</sup>dx/(e<sup>x</sup>-1)。",
-              "标准积分：∫<sub>0</sub><sup>∞</sup>x<sup>3</sup>dx/(e<sup>x</sup>-1)=π<sup>4</sup>/15。",
-              "所以：u(T)=π<sup>2</sup>k<sub>B</sub><sup>4</sup>T<sup>4</sup>/(15ℏ<sup>3</sup>c<sup>3</sup>)。"
-            ], [
-              "T<sup>4</sup> 来自 ω<sup>3</sup>dω 的换元：每个 ω 都带一个 T。",
-              "这就是 Stefan-Boltzmann 定律的能量密度版本。",
-              "宇宙学里辐射能量密度 ρ<sub>γ</sub>∝T<sup>4</sup> 就来自这里。"
-            ], "变量替换要完整写，别只报 T⁴。"),
-          S("29 Number state：固定光子数态", [
-              "数态定义：|n⟩ = (a<sup>†</sup>)<sup>n</sup>|0⟩/√(n!)。",
-              "光子数算符：N̂=a<sup>†</sup>a。",
-              "本征方程：N̂|n⟩ = n|n⟩。",
-              "湮灭算符作用：a|n⟩ = √n |n-1⟩。",
-              "产生算符作用：a<sup>†</sup>|n⟩ = √(n+1)|n+1⟩。"
-            ], [
-              "|n⟩ 表示同一个模式里正好有 n 个光子。",
-              "这类态光子数非常确定，但相位高度不确定。",
-              "这就是它不像经典电磁波的原因：经典波需要稳定相位。"
-            ], "number state 是光子数确定态，不是经典波。"),
-          S("30 数态中的平均电场为什么为零", [
-              "单模电场可写作：Ê(r,t)=iE<sub>0</sub>[ae<sup>iθ</sup>-a<sup>†</sup>e<sup>-iθ</sup>]，其中 θ=k·r-ωt。",
-              "在数态中：⟨n|a|n⟩=√n⟨n|n-1⟩=0。",
-              "同理：⟨n|a<sup>†</sup>|n⟩=√(n+1)⟨n|n+1⟩=0。",
-              "所以：⟨n|Ê(r,t)|n⟩=0。"
-            ], [
-              "数态不是没有能量，它有 nℏω 的能量。",
-              "但它没有确定相位，所以平均场振幅为零。",
-              "这回答了笔记里“number state 和经典波为什么不同”的核心疑问。"
-            ], "光子数确定不等于经典场确定。"),
-          S("31 相干态定义：湮灭算符的本征态", [
-              "相干态定义：a|α⟩ = α|α⟩。",
-              "α 是复数，可写为 α=Ae<sup>iθ</sup>。",
-              "A 控制平均光子数，θ 控制相位。",
-              "相干态不是 N̂ 的本征态，而是 a 的本征态。"
-            ], [
-              "a 是降光子数的算符；它作用在相干态上，只是乘出一个复数 α。",
-              "这让电场平均值能像经典正弦波一样振荡。",
-              "经典电磁波的量子图像不是 |n⟩，而更接近 |α⟩。"
-            ], "相干态定义必须先写 a|α⟩=α|α⟩。"),
-          S("32 从 a|α⟩=α|α⟩ 推出相干态展开式", [
-              "设 |α⟩=Σ<sub>n=0</sub><sup>∞</sup>C<sub>n</sub>|n⟩。",
-              "左边：a|α⟩=Σ<sub>n=1</sub><sup>∞</sup>C<sub>n</sub>√n |n-1⟩。",
-              "令 m=n-1，得：a|α⟩=Σ<sub>m=0</sub><sup>∞</sup>C<sub>m+1</sub>√(m+1)|m⟩。",
-              "右边：α|α⟩=Σ<sub>m=0</sub><sup>∞</sup>αC<sub>m</sub>|m⟩。",
-              "逐项比较 |m⟩ 系数：C<sub>m+1</sub>√(m+1)=αC<sub>m</sub>。",
-              "所以递推：C<sub>m+1</sub>=αC<sub>m</sub>/√(m+1)。",
-              "连续递推得到：C<sub>n</sub>=C<sub>0</sub>α<sup>n</sup>/√(n!)。"
-            ], [
-              "这里每一步都只是把基底 |n⟩ 的系数对齐。",
-              "相干态天然是很多数态 |n⟩ 的叠加，而不是一个固定光子数。",
-              "你笔记里写的递推式就是从这一行逐项比较来的。"
-            ], "展开、作用 a、换指标、逐项比较，四步不能跳。"),
-          S("33 用归一化确定 C₀", [
-              "归一化条件：⟨α|α⟩=1。",
-              "代入 C<sub>n</sub>=C<sub>0</sub>α<sup>n</sup>/√(n!)。",
-              "⟨α|α⟩=|C<sub>0</sub>|<sup>2</sup>Σ<sub>n=0</sub><sup>∞</sup>|α|<sup>2n</sup>/n!。",
-              "指数级数：Σ<sub>n=0</sub><sup>∞</sup>x<sup>n</sup>/n! = e<sup>x</sup>。",
-              "所以：⟨α|α⟩=|C<sub>0</sub>|<sup>2</sup>e<sup>|α|²</sup>=1。",
-              "取 C<sub>0</sub>=e<sup>-|α|²/2</sup>。",
-              "最终：|α⟩=e<sup>-|α|²/2</sup>Σ<sub>n=0</sub><sup>∞</sup>α<sup>n</sup>|n⟩/√(n!)。"
-            ], [
-              "C<sub>0</sub> 只由归一化确定，整体相位通常取为 0。",
-              "这个展开式说明相干态在每个数态 |n⟩ 上都有概率幅。",
-              "它不是“粒子数固定的态”，而是“相位相对清楚的态”。"
-            ], "相干态展开式必须有 e<sup>-|α|²/2</sup>。"),
-          S("34 相干态的光子数分布是 Poisson 分布", [
-              "投影到数态的振幅：⟨n|α⟩=e<sup>-|α|²/2</sup>α<sup>n</sup>/√(n!)。",
-              "概率：P(n)=|⟨n|α⟩|<sup>2</sup>。",
-              "所以：P(n)=e<sup>-|α|²</sup>|α|<sup>2n</sup>/n!。",
-              "令 n̄=|α|<sup>2</sup>。",
-              "得到：P(n)=e<sup>-n̄</sup>n̄<sup>n</sup>/n!。"
-            ], [
-              "这就是 Poisson 分布。",
-              "相干态的光子数不是固定的，而是在平均值 n̄ 附近涨落。",
-              "宏观经典光场中 n̄ 很大，涨落的相对比例反而很小。"
-            ], "相干态光子数分布一定写成 Poisson。"),
-          S("35 相干态的平均光子数与涨落", [
-              "平均光子数：⟨N̂⟩=⟨a<sup>†</sup>a⟩=|α|<sup>2</sup>=n̄。",
-              "Poisson 分布满足：⟨n<sup>2</sup>⟩-⟨n⟩<sup>2</sup>=n̄。",
-              "所以：Δn=√n̄。",
-              "相对涨落：Δn/n̄ = 1/√n̄。",
-              "当 n̄≫1 时，Δn/n̄≪1。"
-            ], [
-              "这就是为什么宏观光场看起来像确定强度的经典波。",
-              "绝对涨落 √n̄ 会变大，但相对涨落 1/√n̄ 会变小。",
-              "很多人只看 Δn 变大就慌了，物理上真正重要的是相对涨落。"
-            ], "宏观经典极限：n̄ 大，相对涨落小。"),
-          S("36 相干态中的平均电场是经典正弦波", [
-              "单模电场：Ê(r,t)=iE<sub>0</sub>[ae<sup>i(k·r-ωt)</sup>-a<sup>†</sup>e<sup>-i(k·r-ωt)</sup>]。",
-              "相干态中：a|α⟩=α|α⟩，且 ⟨α|a<sup>†</sup>=α<sup>*</sup>⟨α|。",
-              "因此：⟨Ê(r,t)⟩=iE<sub>0</sub>[αe<sup>i(k·r-ωt)</sup>-α<sup>*</sup>e<sup>-i(k·r-ωt)</sup>]。",
-              "令 α=Ae<sup>iθ</sup>。",
-              "则：⟨Ê(r,t)⟩=-2E<sub>0</sub>A sin(k·r-ωt+θ)。"
-            ], [
-              "这就是一个有确定相位 θ 的经典电磁波。",
-              "数态中平均电场为 0；相干态中平均电场随时间振荡。",
-              "所以说相干态最像经典电磁波，不是文学比喻，是算出来的。"
-            ], "把 a 替换成 α 后，平均电场就是经典正弦波。"),
-          S("37 Number-phase 不确定关系的直观含义", [
-              "数态 |n⟩：光子数完全确定，Δn=0。",
-              "但数态没有确定相位，所以 ⟨Ê⟩=0。",
-              "相干态 |α⟩：相位相对确定，但光子数不确定。",
-              "相干态中 Δn=√n̄，Δn/n̄=1/√n̄。",
-              "直观说：Δφ·Δn ≳ 1/2。"
-            ], [
-              "严格相位算符有技术细节，但直观结论很清楚：光子数越确定，相位越模糊。",
-              "经典波需要稳定相位，所以不能是严格数态。",
-              "相干态牺牲一点光子数确定性，换来清楚的相位。"
-            ], "经典电磁波对应相干态，不对应严格 number state。"),
-          S("38 最终逻辑链：从 Maxwell 到光子、黑体、相干态", [
-              "Maxwell 方程 → 引入 A：B=∇×A，E=-∂A/∂t-∇φ。",
-              "库伦规范 → ∇·A=0，φ=0，只保留两个横向偏振。",
-              "A 满足波动方程 → 平面波模式，ω=ck。",
-              "场能量 H → 写成 A 的时间变化平方 + 空间变化平方。",
-              "微元法 → A<sub>n</sub> 像位移，相邻差分像弹簧形变。",
-              "Fourier 变换 → 每个 k、λ 模式独立。",
-              "量子化 → H=Σ<sub>k,λ</sub>ℏω<sub>k</sub>(a<sup>†</sup>a+1/2)。",
-              "黑体 → 光子 DOS × ℏω × 玻色分布，且 μ<sub>γ</sub>=0。",
-              "相干态 → |α⟩ 是不同 |n⟩ 的叠加，平均场像经典波。"
-            ], [
-              "整章不是一堆孤立公式，而是一条很顺的路。",
-              "光子不是额外塞进来的小球，而是电磁场正常模式的量子激发。",
-              "如果你能把这条链讲出来，这块基本就从‘背公式’升级成‘真的会了’。"
-            ], "最后记一句：先有场的模式，再有模式量子化后的光子。")
+        T("emfield", "电磁场/黑体/相干态", "考试要求 10-12", "微元法量子化电磁场、黑体辐射与相干态", "H=Σ<sub>k,λ</sub>ℏω(n+1/2)", [
+          S("01 从电磁场能量写 Hamilton 量", [
+            "电磁场能量 H=(1/2)∫d<sup>3</sup>r[ε<sub>0</sub>E<sup>2</sup>+(1/μ<sub>0</sub>)B<sup>2</sup>]。",
+            "采用 Coulomb 规范 ∇·A=0。",
+            "无源辐射场中 E=-∂A/∂t，B=∇×A。",
+            "目标是把 A 的每个横向 Fourier 模化成谐振子。"
+          ], [
+            "考试要求中明确提到从电磁场能量表达式出发。",
+            "Coulomb 规范去掉纵向自由度，只保留横向光子。",
+            "这和一维原子链量子化结构完全平行。"
+          ], "先写 H、电磁势关系和 Coulomb 规范。"),
+          S("02 模展开和两个横向偏振", [
+            "在体积 V 中取周期边界，A(r,t)=Σ<sub>k,λ</sub>q<sub>kλ</sub>(t)e<sub>kλ</sub>e<sup>ik·r</sup>/√V。",
+            "横向条件 k·e<sub>kλ</sub>=0。",
+            "对每个 k 有两个独立偏振 λ=1,2。",
+            "正交归一使不同 k、λ 模互不耦合。"
+          ], [
+            "光子简并度为 2，不是 3，因为电磁波是横波。",
+            "周期边界让求和与态密度计算方便。",
+            "每个模式的广义坐标是 q<sub>kλ</sub>。"
+          ], "写清两个横向偏振。"),
+          S("03 每个模式等价于谐振子", [
+            "代入场能量并用正交关系。",
+            "H=Σ<sub>k,λ</sub>[p<sub>kλ</sub><sup>2</sup>/2+(ω<sub>k</sub><sup>2</sup>q<sub>kλ</sub><sup>2</sup>)/2]，差别只在归一化约定。",
+            "ω<sub>k</sub>=c|k|。",
+            "这就是很多互不耦合的简谐振子。"
+          ], [
+            "资料中所谓微元法，本质是把连续场离散成很多正常模。",
+            "正常模对角化后才能逐个量子化。",
+            "声子与光子的统一点：都是谐振子模式的量子。"
+          ], "一定写出 ω=c|k|。"),
+          S("04 量子化并得到光子 Hamilton 量", [
+            "令 [q̂<sub>kλ</sub>,p̂<sub>k'λ'</sub>]=iℏδ<sub>kk'</sub>δ<sub>λλ'</sub>。",
+            "定义产生湮灭算符 a<sub>kλ</sub>、a<sub>kλ</sub><sup>†</sup>。",
+            "H=Σ<sub>k,λ</sub>ℏω<sub>k</sub>(a<sub>kλ</sub><sup>†</sup>a<sub>kλ</sub>+1/2)。",
+            "n<sub>kλ</sub>=a<sub>kλ</sub><sup>†</sup>a<sub>kλ</sub> 是光子数。"
+          ], [
+            "光子是电磁场正常模的能量量子。",
+            "光子数不守恒，所以平衡辐射场化学势 μ=0。",
+            "这直接导向 Planck 黑体分布。"
+          ], "电磁场量子化最终必须写成谐振子求和。"),
+          S("05 黑体辐射能量密度", [
+            "每个模式平均光子数 n̄=1/(e<sup>βℏω</sup>-1)。",
+            "光子 DOS：g(ω)dω=Vω<sup>2</sup>dω/(π<sup>2</sup>c<sup>3</sup>)，其中已含两个偏振。",
+            "单位体积能量密度 u(ω)dω=[ℏω/(e<sup>βℏω</sup>-1)]ω<sup>2</sup>dω/(π<sup>2</sup>c<sup>3</sup>)。",
+            "这就是 Planck 分布。"
+          ], [
+            "与声子 Debye 积分很像，但光子没有 Debye 截止。",
+            "两个偏振使系数中出现 1/π<sup>2</sup>。",
+            "黑体辐射是玻色统计和电磁 DOS 的合体。"
+          ], "写出 u(ω)dω 的完整形式。"),
+          S("06 相干态的定义", [
+            "单个谐振子模式的相干态定义为 a|α>=α|α>。",
+            "可展开为 |α>=e<sup>-|α|<sup>2</sup>/2</sup>Σ<sub>n=0</sub><sup>∞</sup>α<sup>n</sup>|n>/√(n!)。",
+            "平均光子数 〈n〉=|α|<sup>2</sup>。",
+            "数涨落满足 Δn=|α|，相对涨落 Δn/〈n〉=1/|α|。"
+          ], [
+            "相干态不是固定光子数态，而是不同 n 的叠加。",
+            "当 |α| 很大时，相对涨落很小，场表现得像经典波。",
+            "这就是相干态对应经典电磁场的统计理解。"
+          ], "定义 a|α>=α|α>，再写 Fock 展开。"),
+          S("07 相干态随时间演化像经典振动", [
+            "谐振子 Hamilton 量 H=ℏω(a<sup>†</sup>a+1/2)。",
+            "若初态为 |α>，时间演化后仍为相干态 |αe<sup>-iωt</sup>>。",
+            "场的平均值 〈E(t)〉 或 〈A(t)〉 随 cos(ωt+φ) 振荡。",
+            "相位由复数 α 的相位决定。"
+          ], [
+            "保持最小不确定度并随时间旋转，是相干态“最经典”的原因。",
+            "激光可近似看成多模或单模相干态。",
+            "声子相干态同样对应经典弹性波。"
+          ], "把 α 的相位和经典振动相位联系起来。")
         ]),
 
         T("bec", "BEC", "考试要求 13", "玻色凝聚临界温度与相干性", "T<sub>c</sub>=const·n<sup>2/3</sup>", [
@@ -1314,4 +957,150 @@
       ]
     }
   ];
+
+  const quantumSection = window.EXPANDED_DATA.find((section) => section.id === "quantum");
+  const emfieldTopic = quantumSection && quantumSection.topics.find((topic) => topic.id === "emfield");
+  if (emfieldTopic) {
+    emfieldTopic.summary = "按笔记的微元法，把电磁场 Hamiltonian 一步步化成谐振子，再推出黑体辐射和相干态";
+    emfieldTopic.core = "H=Σ<sub>k,λ</sub>ℏω<sub>k</sub>(a<sup>†</sup>a+1/2)";
+    emfieldTopic.steps = [
+      S("01 从电磁场能量和 Coulomb 规范出发", [
+        "<span class='eq'><span class='mini'>1.1</span>H = (1/2)∫d<sup>3</sup>r [ ε<sub>0</sub>E<sup>2</sup> + B<sup>2</sup>/μ<sub>0</sub> ]</span><span class='why'>考试要求明确说从电磁场能量表达式出发；这就是要量子化的经典 Hamilton 量。</span>",
+        "<span class='eq'><span class='mini'>1.2</span>B = ∇ × A，E = -∂A/∂t - ∇φ</span><span class='why'>先用矢势 A 和标势 φ 表示电磁场，后面才能把 A 当作广义坐标。</span>",
+        "<span class='eq'><span class='mini'>1.3</span>取 Coulomb 规范：∇·A = 0</span><span class='why'>这个规范去掉纵向自由度；自由辐射场只剩横向波，所以光子只有两个偏振。</span>",
+        "<span class='eq'><span class='mini'>1.4</span>无源辐射场可取 φ = 0，于是 E = -∂A/∂t = -Ȧ</span><span class='why'>这一步把 E 和 A 的时间导数联系起来，说明 A 类似坐标，E 类似动量。</span>",
+        "<span class='eq'><span class='mini'>1.5</span>H = (1/2)∫d<sup>3</sup>r [ ε<sub>0</sub>Ȧ<sup>2</sup> + (∇×A)<sup>2</sup>/μ<sub>0</sub> ]</span><span class='why'>现在 Hamilton 量只含 A 和 Ȧ，形式上已经像“动能 + 势能”。</span>"
+      ], [
+        "这一步不能只写最终 H=Σℏω(n+1/2)，因为考试要求强调从电磁场能量表达式出发。",
+        "Coulomb 规范保留横向自由度；这就是光子偏振数为 2 的来源。",
+        "A 是广义坐标，-ε<sub>0</sub>E 与其共轭动量成正比。"
+      ], "先写 H、E/B 与 A 的关系、Coulomb 规范，再把 H 写成 A 和 Ȧ。"),
+      S("02 微元法离散化：把场变成格点变量", [
+        "<span class='eq'><span class='mini'>2.1</span>取沿 x 方向传播、偏振固定的波：A(r,t)=ê A(x,t)</span><span class='why'>先量子化一个传播方向、一个偏振的标量振幅，两个横向偏振最后再补上。</span>",
+        "<span class='eq'><span class='mini'>2.2</span>把 x 方向切成长度 a 的小体元，截面积 S，体元体积 V<sub>cell</sub>=aS</span><span class='why'>这是笔记里的微元法：连续场先离散成很多小格点。</span>",
+        "<span class='eq'><span class='mini'>2.3</span>第 n 个体元中心 x<sub>n</sub>=na，近似 A(x,t)≈A<sub>n</sub>(t)，E(x,t)≈E<sub>n</sub>(t)，B(x,t)≈B<sub>n</sub>(t)</span><span class='why'>体元足够小时，场在体元内可看成常数。</span>",
+        "<span class='eq'><span class='mini'>2.4</span>∫d<sup>3</sup>r → Σ<sub>n</sub>V<sub>cell</sub></span><span class='why'>连续积分变成格点求和，这是从场论形式过渡到链模型的关键。</span>",
+        "<span class='eq'><span class='mini'>2.5</span>H = Σ<sub>n</sub>V<sub>cell</sub>[ ε<sub>0</sub>E<sub>n</sub><sup>2</sup>/2 + B<sub>n</sub><sup>2</sup>/(2μ<sub>0</sub>) ]</span><span class='why'>每个体元贡献一份电场能和磁场能。</span>"
+      ], [
+        "离散化不是说电磁场真的长在晶格上，而是为了把连续 Hamiltonian 写成耦合振子链。",
+        "格点变量是 A<sub>n</sub>，它对应一维原子链里的位移 x<sub>n</sub>。",
+        "后面取 a→0、Na→L，就回到连续电磁场。"
+      ], "写清体元体积、场变量 A<sub>n</sub>，以及积分到求和的替换。"),
+      S("03 用 Stokes 定理把磁场写成空间差分", [
+        "<span class='eq'><span class='mini'>3.1</span>Stokes 定理：∫<sub>S</sub>B·dS = ∮<sub>∂S</sub>A·dl</span><span class='why'>因为 B=∇×A，磁通等于矢势沿边界的环量。</span>",
+        "<span class='eq'><span class='mini'>3.2</span>对穿过体元的侧面取面积 aw：B<sub>n</sub>aw ≈ A<sub>n</sub>w - A<sub>n-1</sub>w</span><span class='why'>边界上相邻两条边的 A 贡献相减，得到离散环量。</span>",
+        "<span class='eq'><span class='mini'>3.3</span>B<sub>n</sub> = (A<sub>n</sub>-A<sub>n-1</sub>)/a</span><span class='why'>两边除以 aw，磁场就是 A 的空间差分。</span>",
+        "<span class='eq'><span class='mini'>3.4</span>E<sub>n</sub> = -Ȧ<sub>n</sub></span><span class='why'>由 φ=0 下 E=-∂A/∂t 得到。</span>",
+        "<span class='eq'><span class='mini'>3.5</span>磁场能 ∝ (A<sub>n</sub>-A<sub>n-1</sub>)<sup>2</sup>，电场能 ∝ Ȧ<sub>n</sub><sup>2</sup></span><span class='why'>这就已经露出“弹簧势能 + 动能”的结构。</span>"
+      ], [
+        "这一步是微元法的核心，不能只写 B=∇×A 后直接跳到 Fourier 模。",
+        "B 是空间差分，E 是时间导数，所以磁场能像弹簧势能，电场能像动能。",
+        "这就是电磁场可以类比一维耦合振子链的原因。"
+      ], "必须写 Stokes 定理和 B<sub>n</sub>=(A<sub>n</sub>-A<sub>n-1</sub>)/a。"),
+      S("04 代回 Hamilton 量并识别一维弹簧链", [
+        "<span class='eq'><span class='mini'>4.1</span>H = Σ<sub>n</sub>V<sub>cell</sub>[ ε<sub>0</sub>Ȧ<sub>n</sub><sup>2</sup>/2 + (A<sub>n</sub>-A<sub>n-1</sub>)<sup>2</sup>/(2μ<sub>0</sub>a<sup>2</sup>) ]</span><span class='why'>把 E<sub>n</sub> 和 B<sub>n</sub> 逐项代回电磁场能量。</span>",
+        "<span class='eq'><span class='mini'>4.2</span>写成 H = Σ<sub>n</sub>[ (M/2)Ȧ<sub>n</sub><sup>2</sup> + (K/2)(A<sub>n</sub>-A<sub>n-1</sub>)<sup>2</sup> ]</span><span class='why'>这一步只是整理系数，让它和一维弹簧链同形。</span>",
+        "<span class='eq'><span class='mini'>4.3</span>M = ε<sub>0</sub>V<sub>cell</sub></span><span class='why'>电场能对应动能项，所以有效质量来自 ε<sub>0</sub>V<sub>cell</sub>。</span>",
+        "<span class='eq'><span class='mini'>4.4</span>K = V<sub>cell</sub>/(μ<sub>0</sub>a<sup>2</sup>)</span><span class='why'>磁场能对应相邻格点的弹簧势能，所以有效弹簧常数来自空间差分系数。</span>",
+        "<span class='eq'><span class='mini'>4.5</span>P<sub>n</sub>=∂L/∂Ȧ<sub>n</sub>=MȦ<sub>n</sub>=-ε<sub>0</sub>V<sub>cell</sub>E<sub>n</sub></span><span class='why'>这说明电场与广义动量只差常数和负号。</span>"
+      ], [
+        "这段才真正说明“电磁场 Hamiltonian 表示成谐振子链”的意思。",
+        "A<sub>n</sub> 对应链上位移；E<sub>n</sub> 对应动量；磁场能对应相邻格点耦合。",
+        "写出 M、K 和 P<sub>n</sub>，推导就不再像提纲。"
+      ], "把 M、K、P<sub>n</sub> 的对应关系写出来。"),
+      S("05 由链模型色散得到光的线性色散", [
+        "<span class='eq'><span class='mini'>5.1</span>一维链正常模色散：ω<sub>k</sub>=2√(K/M)|sin(ka/2)|</span><span class='why'>沿用一维原子链的正常模结果。</span>",
+        "<span class='eq'><span class='mini'>5.2</span>K/M = [V<sub>cell</sub>/(μ<sub>0</sub>a<sup>2</sup>)]/[ε<sub>0</sub>V<sub>cell</sub>] = 1/(μ<sub>0</sub>ε<sub>0</sub>a<sup>2</sup>)</span><span class='why'>体元体积约掉，只剩真空电磁常数和格距。</span>",
+        "<span class='eq'><span class='mini'>5.3</span>c = 1/√(μ<sub>0</sub>ε<sub>0</sub>)</span><span class='why'>用 Maxwell 理论中光速与真空常数的关系。</span>",
+        "<span class='eq'><span class='mini'>5.4</span>ω<sub>k</sub> = (2c/a)|sin(ka/2)|</span><span class='why'>这是离散电磁场链模型的色散。</span>",
+        "<span class='eq'><span class='mini'>5.5</span>长波极限 ka≪1：sin(ka/2)≈ka/2，所以 ω<sub>k</sub>≈c|k|</span><span class='why'>取连续极限后得到真实光子的线性色散。</span>"
+      ], [
+        "这里不是直接假设 ω=ck，而是从离散模型的色散取长波极限得到。",
+        "这也解释了为什么后面光子 DOS 可以用 ε=ℏck。",
+        "只写 ω=ck 会让推导链条断掉。"
+      ], "先写 ω<sub>k</sub>=2√(K/M)sin(ka/2)，再取 ka≪1。"),
+      S("06 Fourier 变换并对角化 Hamilton 量", [
+        "<span class='eq'><span class='mini'>6.1</span>A<sub>n</sub>=(1/√N)Σ<sub>k</sub>A<sub>k</sub>e<sup>ikna</sup>，P<sub>n</sub>=(1/√N)Σ<sub>k</sub>P<sub>k</sub>e<sup>ikna</sup></span><span class='why'>离散平移对称性决定正常模是平面波。</span>",
+        "<span class='eq'><span class='mini'>6.2</span>(1/N)Σ<sub>n</sub>e<sup>i(k-k')na</sup>=δ<sub>k,k'</sub></span><span class='why'>正交关系会把不同 k 模的交叉项消掉。</span>",
+        "<span class='eq'><span class='mini'>6.3</span>Σ<sub>n</sub>P<sub>n</sub><sup>2</sup> → Σ<sub>k</sub>P<sub>k</sub>P<sub>-k</sub></span><span class='why'>动能项在 k 空间成为独立模求和。</span>",
+        "<span class='eq'><span class='mini'>6.4</span>A<sub>n</sub>-A<sub>n-1</sub>=(1/√N)Σ<sub>k</sub>A<sub>k</sub>e<sup>ikna</sup>(1-e<sup>-ika</sup>)</span><span class='why'>差分会给每个 k 模带来一个因子 1-e<sup>-ika</sup>。</span>",
+        "<span class='eq'><span class='mini'>6.5</span>|1-e<sup>-ika</sup>|<sup>2</sup>=(1-e<sup>-ika</sup>)(1-e<sup>ika</sup>)=2-2cos(ka)=4sin<sup>2</sup>(ka/2)</span><span class='why'>这就是势能项中 sin<sup>2</sup>(ka/2) 的来源。</span>",
+        "<span class='eq'><span class='mini'>6.6</span>H=Σ<sub>k</sub>[P<sub>k</sub>P<sub>-k</sub>/(2M)+(Mω<sub>k</sub><sup>2</sup>/2)A<sub>k</sub>A<sub>-k</sub>]</span><span class='why'>电磁场已经被分解成互不耦合的正常模谐振子。</span>"
+      ], [
+        "“正交归一使不同模不耦合”要写成 δ<sub>k,k'</sub>。",
+        "势能项里的 4sin<sup>2</sup>(ka/2) 是从差分平方来的，不应跳过。",
+        "到这里仍是经典场，只是完成了正常模分解。"
+      ], "写出 Fourier 展开、正交关系、差分平方因子和 k 空间 Hamilton 量。"),
+      S("07 正则量子化和无量纲化", [
+        "<span class='eq'><span class='mini'>7.1</span>A<sub>k</sub> → Â<sub>k</sub>，P<sub>k</sub> → P̂<sub>k</sub></span><span class='why'>把经典正常模变量提升为算符。</span>",
+        "<span class='eq'><span class='mini'>7.2</span>[Â<sub>k</sub>,P̂<sub>-k'</sub>]=iℏδ<sub>k,k'</sub></span><span class='why'>这是正常模坐标和动量的正则对易关系。</span>",
+        "<span class='eq'><span class='mini'>7.3</span>Ã<sub>k</sub>=√(Mω<sub>k</sub>/ℏ) Â<sub>k</sub></span><span class='why'>把坐标按谐振子的自然长度尺度无量纲化。</span>",
+        "<span class='eq'><span class='mini'>7.4</span>P̃<sub>k</sub>=P̂<sub>k</sub>/√(Mℏω<sub>k</sub>)</span><span class='why'>把动量按同一频率尺度无量纲化。</span>",
+        "<span class='eq'><span class='mini'>7.5</span>Ĥ=(1/2)Σ<sub>k</sub>ℏω<sub>k</sub>(P̃<sub>k</sub>P̃<sub>-k</sub>+Ã<sub>k</sub>Ã<sub>-k</sub>)</span><span class='why'>Hamilton 量已经是标准量子谐振子形式。</span>"
+      ], [
+        "无量纲化的作用是把每个模式写成统一的 a、a<sup>†</sup>。",
+        "这和声子量子化中的 Q<sub>q</sub>、P<sub>q</sub> 完全平行。",
+        "只写“定义产生湮灭算符”会漏掉为什么能这么定义。"
+      ], "写出对易关系和无量纲变量。"),
+      S("08 产生湮灭算符与光子 Hamilton 量", [
+        "<span class='eq'><span class='mini'>8.1</span>a<sub>k</sub>=(1/√2)(Ã<sub>k</sub>+iP̃<sub>k</sub>)</span><span class='why'>这是标准谐振子的降算符。</span>",
+        "<span class='eq'><span class='mini'>8.2</span>a<sub>k</sub><sup>†</sup>=(1/√2)(Ã<sub>-k</sub>-iP̃<sub>-k</sub>)</span><span class='why'>实场满足 Â<sub>k</sub><sup>†</sup>=Â<sub>-k</sub>，所以伴随算符带 -k。</span>",
+        "<span class='eq'><span class='mini'>8.3</span>[a<sub>k</sub>,a<sub>k'</sub><sup>†</sup>]=δ<sub>k,k'</sub></span><span class='why'>由正则对易关系推出，说明光子是玻色型激发。</span>",
+        "<span class='eq'><span class='mini'>8.4</span>n̂<sub>k</sub>=a<sub>k</sub><sup>†</sup>a<sub>k</sub></span><span class='why'>这是第 k 个模式中的光子数算符。</span>",
+        "<span class='eq'><span class='mini'>8.5</span>Ĥ=Σ<sub>k</sub>ℏω<sub>k</sub>(a<sub>k</sub><sup>†</sup>a<sub>k</sub>+1/2)</span><span class='why'>单偏振情形下，每个正常模就是一个量子谐振子。</span>",
+        "<span class='eq'><span class='mini'>8.6</span>加入两个横向偏振：Ĥ=Σ<sub>k,λ</sub>ℏω<sub>k</sub>(a<sub>kλ</sub><sup>†</sup>a<sub>kλ</sub>+1/2)</span><span class='why'>λ=1,2 对应两个横向偏振，最终光子气要把它们都计入。</span>"
+      ], [
+        "光子就是电磁场正常模的一份能量量子 ℏω。",
+        "零点能 1/2 对热辐射的温度依赖通常不贡献，可视作常数背景。",
+        "光子数不守恒，所以黑体辐射计算中 μ=0。"
+      ], "最终式必须有 Σ<sub>k,λ</sub> 和两个偏振。"),
+      S("09 连续极限下的场算符展开", [
+        "<span class='eq'><span class='mini'>9.1</span>Â<sub>n</sub>=(1/√N)Σ<sub>k</sub>Â<sub>k</sub>e<sup>ikna</sup></span><span class='why'>从正常模回到实空间格点。</span>",
+        "<span class='eq'><span class='mini'>9.2</span>由 a<sub>k</sub> 定义反解：Â<sub>k</sub>∝(a<sub>k</sub>+a<sub>-k</sub><sup>†</sup>)/√ω<sub>k</sub></span><span class='why'>坐标算符由产生和湮灭算符线性组合而成。</span>",
+        "<span class='eq'><span class='mini'>9.3</span>N V<sub>cell</sub> → V，na → r</span><span class='why'>取连续极限后，总体积变为 V，格点位置变为空间坐标。</span>",
+        "<span class='eq'><span class='mini'>9.4</span>Â(r)=Σ<sub>k,λ</sub>ê<sub>kλ</sub>√[ℏ/(2ε<sub>0</sub>Vω<sub>k</sub>)](a<sub>kλ</sub>e<sup>ik·r</sup>+a<sub>kλ</sub><sup>†</sup>e<sup>-ik·r</sup>)</span><span class='why'>这是电磁矢势场的量子化展开式。</span>",
+        "<span class='eq'><span class='mini'>9.5</span>Ê(r)=-∂Â/∂t，B̂(r)=∇×Â(r)</span><span class='why'>量子化后的 E 和 B 仍由 A 的时间导数和旋度给出。</span>"
+      ], [
+        "这对应笔记里从离散 A<sub>n</sub> 回到连续 Â(r) 的公式。",
+        "归一化系数里的 V、ε<sub>0</sub>、ω<sub>k</sub> 都来自前面的无量纲化。",
+        "场算符写出后，黑体辐射就变成光子气统计问题。"
+      ], "连续极限公式要保留偏振矢量和归一化系数。"),
+      S("10 光子态密度与 Planck 分布", [
+        "<span class='eq'><span class='mini'>10.1</span>光子色散：ε=ℏω=ℏck</span><span class='why'>来自前面长波极限 ω=ck。</span>",
+        "<span class='eq'><span class='mini'>10.2</span>dN = 2·V/(2π)<sup>3</sup>·4πk<sup>2</sup>dk</span><span class='why'>因子 2 是两个偏振；4πk<sup>2</sup>dk 是 k 空间球壳体积。</span>",
+        "<span class='eq'><span class='mini'>10.3</span>k=ω/c，dk=dω/c，所以 g(ω)dω=Vω<sup>2</sup>dω/(π<sup>2</sup>c<sup>3</sup>)</span><span class='why'>这就是按角频率计数的光子态密度。</span>",
+        "<span class='eq'><span class='mini'>10.4</span>光子数不守恒，μ=0</span><span class='why'>黑体腔壁可以吸收和发射任意数目的光子，因此平衡不固定光子数。</span>",
+        "<span class='eq'><span class='mini'>10.5</span>n̄(ω)=1/(e<sup>βℏω</sup>-1)</span><span class='why'>光子是玻色子，并且 μ=0。</span>",
+        "<span class='eq'><span class='mini'>10.6</span>u(ω)dω=[ℏω·n̄(ω)]g(ω)dω/V = ℏω<sup>3</sup>dω/[π<sup>2</sup>c<sup>3</sup>(e<sup>βℏω</sup>-1)]</span><span class='why'>每个模式能量 ℏω 乘平均光子数，再乘每体积态密度。</span>"
+      ], [
+        "Planck 分布不是孤立背诵公式，而是 DOS × Bose 占据 × 单光子能量。",
+        "两个偏振已经包含在 g(ω) 中。",
+        "若改用普通频率 ν，还要用 ω=2πν 和 u(ω)dω=u(ν)dν。"
+      ], "写出 g(ω) 和 u(ω)dω 的完整推导。"),
+      S("11 总能量密度的 T^4 定律", [
+        "<span class='eq'><span class='mini'>11.1</span>U/V=∫<sub>0</sub><sup>∞</sup>u(ω)dω=∫<sub>0</sub><sup>∞</sup>ℏω<sup>3</sup>dω/[π<sup>2</sup>c<sup>3</sup>(e<sup>βℏω</sup>-1)]</span><span class='why'>对所有角频率的谱能量密度积分。</span>",
+        "<span class='eq'><span class='mini'>11.2</span>令 x=βℏω=ℏω/(k<sub>B</sub>T)，则 dω=(k<sub>B</sub>T/ℏ)dx</span><span class='why'>把温度依赖从积分变量中提出。</span>",
+        "<span class='eq'><span class='mini'>11.3</span>ω<sup>3</sup>dω=(k<sub>B</sub>T/ℏ)<sup>4</sup>x<sup>3</sup>dx</span><span class='why'>这一步直接给出 T<sup>4</sup> 的来源。</span>",
+        "<span class='eq'><span class='mini'>11.4</span>U/V=(k<sub>B</sub><sup>4</sup>T<sup>4</sup>)/(π<sup>2</sup>c<sup>3</sup>ℏ<sup>3</sup>)∫<sub>0</sub><sup>∞</sup>x<sup>3</sup>/(e<sup>x</sup>-1)dx</span><span class='why'>剩下的积分是无量纲常数。</span>",
+        "<span class='eq'><span class='mini'>11.5</span>∫<sub>0</sub><sup>∞</sup>x<sup>3</sup>/(e<sup>x</sup>-1)dx=π<sup>4</sup>/15</span><span class='why'>这是标准 Bose 积分。</span>",
+        "<span class='eq'><span class='mini'>11.6</span>U/V=π<sup>2</sup>k<sub>B</sub><sup>4</sup>T<sup>4</sup>/(15c<sup>3</sup>ℏ<sup>3</sup>) ∝ T<sup>4</sup></span><span class='why'>得到黑体辐射能量密度的 Stefan-Boltzmann 标度。</span>"
+      ], [
+        "T<sup>4</sup> 来自三维光子 DOS 的 ω<sup>2</sup> 和单光子能量 ℏω。",
+        "这个积分结构和 Debye 声子低温热容很像。",
+        "区别是光子没有 Debye 截止，上限是 ∞。"
+      ], "写变量代换 x=ℏω/k<sub>B</sub>T，并指出 T<sup>4</sup> 从哪里来。"),
+      S("12 相干态：为什么大量光子像经典场", [
+        "<span class='eq'><span class='mini'>12.1</span>a|α〉=α|α〉</span><span class='why'>相干态定义为湮灭算符的本征态。</span>",
+        "<span class='eq'><span class='mini'>12.2</span>|α〉=e<sup>-|α|<sup>2</sup>/2</sup>Σ<sub>n=0</sub><sup>∞</sup>α<sup>n</sup>|n〉/√(n!)</span><span class='why'>展开到光子数态后，系数对应 Poisson 分布的振幅。</span>",
+        "<span class='eq'><span class='mini'>12.3</span>〈n〉=〈α|a<sup>†</sup>a|α〉=|α|<sup>2</sup></span><span class='why'>平均光子数由复振幅模方决定。</span>",
+        "<span class='eq'><span class='mini'>12.4</span>(Δn)<sup>2</sup>=|α|<sup>2</sup>，所以 Δn/〈n〉=1/|α|</span><span class='why'>光子数很多时，相对涨落很小。</span>",
+        "<span class='eq'><span class='mini'>12.5</span>|α,t〉=|αe<sup>-iωt</sup>〉</span><span class='why'>相干态在谐振子演化下仍是相干态，只是复振幅旋转。</span>",
+        "<span class='eq'><span class='mini'>12.6</span>〈A(t)〉∝αe<sup>-iωt</sup>+α<sup>*</sup>e<sup>iωt</sup>=2|α|cos(ωt-argα)</span><span class='why'>场算符平均值按经典正弦波振荡，这就是相干态对应经典电磁波的统计解释。</span>"
+      ], [
+        "相干态不是固定光子数态，而是许多光子数态的叠加。",
+        "当 〈n〉 很大时，相对涨落趋小，平均场满足经典振动图像。",
+        "这也解释了为什么 BEC、声子相干态、电磁波相干态都能表现出宏观相干性。"
+      ], "写 a|α〉=α|α〉、Fock 展开、〈n〉、涨落和 〈A(t)〉。")
+    ];
+  }
 })();
