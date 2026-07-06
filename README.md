@@ -11,3 +11,7 @@
 - 新增 `source-derivations-overrides.js`。
 - 根据《高统讲义-合并版》和《高等统计物理（系综理论➕真题）》补全并覆盖系综理论、量子理想气体、声子、电磁场量子化、BEC、Hubbard、Hartree-Fock 与 BCS 等专题的详细推导。
 - 保留此前八个 MP4 天体物理专题替换内容。
+
+
+## 完整推导补全版
+新增 complete-derivation-overrides.js，补全声子量子化、电磁场量子化、FD/BE、DOS、BEC、Hubbard、HF/BCS 以及天体物理关键推导过程。
