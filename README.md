@@ -15,3 +15,8 @@
 
 ## 完整推导补全版
 新增 complete-derivation-overrides.js，补全声子量子化、电磁场量子化、FD/BE、DOS、BEC、Hubbard、HF/BCS 以及天体物理关键推导过程。
+
+
+- 2026-07-06 更新：已把 image-gen 生成的凝聚态物理风格头图替换进网页，并新增 `lecture-merged-overrides.js`，按《高统讲义-合并版》常见推导链对各专题补充中间式。
+
+- 2026-07-06 追加：为各专题增加《高统讲义-合并版》参考页码对照；宇宙热史专题明确标注为来源于其他 sources。

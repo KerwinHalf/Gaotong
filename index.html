@@ -58,7 +58,7 @@
     .hero-image {
       position: absolute;
       inset: 0;
-      background: url("./assets/cosmic-statmech.png") left center / cover no-repeat;
+      background: url("./assets/condensed-matter-hero.png") center center / cover no-repeat;
       filter: saturate(1.05) contrast(1.05);
       transform: scale(1.02);
     }
@@ -652,6 +652,7 @@
   <script src="./source-derivations-overrides.js"></script>
   <script src="./complete-derivation-overrides.js"></script>
   <script src="./ultra-detailed-overrides.js"></script>
+  <script src="./lecture-merged-overrides.js"></script>
   <script>
     const { useEffect, useMemo, useState } = React;
 
@@ -1271,6 +1272,7 @@
                 React.createElement("div", { className: "facts" },
                   fact("主题", cleanLabel(topic.label)),
                   fact("范围", topic.exam),
+                  fact("讲义页码", topic.pages || "未单列页码"),
                   fact("主公式", React.createElement("span", { dangerouslySetInnerHTML: { __html: topic.core } })),
                   fact("当前", activeStep.exam)
                 ),
@@ -1292,6 +1294,7 @@
           React.createElement("div", { className: "detail-layout" },
             React.createElement("aside", { className: "toc-panel" },
               React.createElement("div", { className: "toc-title" }, "目录"),
+              topic.pages ? React.createElement("p", { style: { margin: "8px 0 14px", color: "rgba(255,255,255,.74)", lineHeight: 1.6, fontSize: "14px" } }, "讲义页码参考：" + topic.pages) : null,
               React.createElement("div", { className: "toc-list", onWheel: horizontalWheel },
                 topic.steps.map((s, i) => React.createElement("button", {
                   key: s.title,
