@@ -137,6 +137,59 @@
     .minor-tabs,
     .timeline,
     .toc-list { scrollbar-width: none; }
+
+
+    /* 横向滚动优化：专题标签太多时显示可拖动滚动条，手机可滑，电脑滚轮可横向滚。 */
+    .major-tabs,
+    .minor-tabs,
+    .timeline,
+    .toc-list {
+      scrollbar-width: thin;
+      scrollbar-color: rgba(244,201,93,.75) rgba(255,255,255,.10);
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior-x: contain;
+    }
+    .minor-tabs {
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      overflow-y: hidden;
+      white-space: nowrap;
+      padding: 0 8px 15px;
+      margin-inline: -2px;
+      scroll-snap-type: x proximity;
+      mask-image: linear-gradient(90deg, transparent 0, #000 18px, #000 calc(100% - 18px), transparent 100%);
+    }
+    .minor-tab {
+      scroll-snap-align: start;
+    }
+    .minor-tabs::-webkit-scrollbar,
+    .major-tabs::-webkit-scrollbar,
+    .timeline::-webkit-scrollbar,
+    .toc-list::-webkit-scrollbar {
+      height: 9px;
+      display: block;
+    }
+    .minor-tabs::-webkit-scrollbar-track,
+    .major-tabs::-webkit-scrollbar-track,
+    .timeline::-webkit-scrollbar-track,
+    .toc-list::-webkit-scrollbar-track {
+      background: rgba(255,255,255,.10);
+      border-radius: 999px;
+    }
+    .minor-tabs::-webkit-scrollbar-thumb,
+    .major-tabs::-webkit-scrollbar-thumb,
+    .timeline::-webkit-scrollbar-thumb,
+    .toc-list::-webkit-scrollbar-thumb {
+      background: linear-gradient(90deg, rgba(244,201,93,.55), rgba(255,213,106,.92));
+      border-radius: 999px;
+      box-shadow: 0 0 16px rgba(244,201,93,.38);
+    }
+    .minor-tabs::-webkit-scrollbar-thumb:hover,
+    .major-tabs::-webkit-scrollbar-thumb:hover,
+    .timeline::-webkit-scrollbar-thumb:hover,
+    .toc-list::-webkit-scrollbar-thumb:hover {
+      background: linear-gradient(90deg, rgba(244,201,93,.75), rgba(255,236,181,.98));
+    }
     .minor-tab {
       flex: 0 0 auto;
       min-width: 88px;
@@ -1119,6 +1172,20 @@
       return { title, formulas, notes, exam };
     }
 
+    function cleanLabel(label) {
+      return String(label || "")
+        .replace(/^\s*讲义\+真题[：:]\s*/, "")
+        .replace(/^\s*讲义＋真题[：:]\s*/, "");
+    }
+    function horizontalWheel(e) {
+      const el = e.currentTarget;
+      if (!el || el.scrollWidth <= el.clientWidth) return;
+      const dx = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
+      if (!dx) return;
+      el.scrollLeft += dx;
+      e.preventDefault();
+    }
+
     function App() {
       const initial = initialSelection();
       const [catId, setCatId] = useState(initial.catId);
@@ -1165,29 +1232,29 @@
           React.createElement("div", { className: "hero-image" }),
           React.createElement("div", { className: "orbit-lines" }),
           React.createElement("header", { className: "top-nav" },
-            React.createElement("nav", { className: "major-tabs" },
+            React.createElement("nav", { className: "major-tabs", onWheel: horizontalWheel },
               DATA.map(c => React.createElement("button", {
                 key: c.id,
                 className: "major-tab" + (c.id === cat.id ? " active" : ""),
                 onClick: () => selectCat(c.id)
               }, c.name))
             ),
-            React.createElement("nav", { className: "minor-tabs" },
+            React.createElement("nav", { className: "minor-tabs", onWheel: horizontalWheel },
               cat.topics.map(t => React.createElement("button", {
                 key: t.id,
                 className: "minor-tab" + (t.id === topic.id ? " active" : ""),
                 onClick: () => selectTopic(t.id)
-              }, t.label))
+              }, cleanLabel(t.label)))
             )
           ),
           React.createElement("div", { className: "hero-content" },
             React.createElement("div", { className: "hero-title" },
               React.createElement("p", { className: "eyebrow" }, "Complete Derivation Review"),
               React.createElement("h1", null, "高统完整推导站"),
-              React.createElement("p", null, "按考试要求重做：公式使用正常数学上下标排版；每个知识点从物理假设、约束、变分或求和开始，逐步推到考试可写结论。当前主题：" + topic.label + "。")
+              React.createElement("p", null, "按考试要求重做：公式使用正常数学上下标排版；每个知识点从物理假设、约束、变分或求和开始，逐步推到考试可写结论。当前主题：" + cleanLabel(topic.label) + "。")
             ),
             React.createElement("aside", { className: "right-rail" },
-              React.createElement("div", { className: "timeline" },
+              React.createElement("div", { className: "timeline", onWheel: horizontalWheel },
                 topic.steps.map((s, i) => React.createElement("button", {
                   key: s.title,
                   className: "time-node" + (i === stepIndex ? " active" : ""),
@@ -1200,7 +1267,7 @@
               React.createElement("div", { className: "info-card" },
                 React.createElement("h2", null, stepNo(stepIndex) + " " + activeTitle),
                 React.createElement("div", { className: "facts" },
-                  fact("主题", topic.label),
+                  fact("主题", cleanLabel(topic.label)),
                   fact("范围", topic.exam),
                   fact("主公式", React.createElement("span", { dangerouslySetInnerHTML: { __html: topic.core } })),
                   fact("当前", activeStep.exam)
@@ -1217,13 +1284,13 @@
         ),
         React.createElement("main", { className: "study-body" },
           React.createElement("div", { className: "section-title" },
-            React.createElement("h2", null, topic.label + "：完整推导正文"),
+            React.createElement("h2", null, cleanLabel(topic.label) + "：完整推导正文"),
             React.createElement("p", null, topic.summary + "。下面每一步都保留公式和解释，不用代码块式下划线变量。")
           ),
           React.createElement("div", { className: "detail-layout" },
             React.createElement("aside", { className: "toc-panel" },
               React.createElement("div", { className: "toc-title" }, "目录"),
-              React.createElement("div", { className: "toc-list" },
+              React.createElement("div", { className: "toc-list", onWheel: horizontalWheel },
                 topic.steps.map((s, i) => React.createElement("button", {
                   key: s.title,
                   className: "toc-button" + (i === stepIndex ? " active" : ""),
@@ -1295,7 +1362,7 @@
     }
     function nextTopicLabel(cat, topic) {
       const idx = cat.topics.findIndex(t => t.id === topic.id);
-      return cat.topics[(idx + 1) % cat.topics.length].label;
+      return cleanLabel(cat.topics[(idx + 1) % cat.topics.length].label);
     }
 
     ReactDOM.createRoot(document.getElementById("root")).render(React.createElement(App));

@@ -13,7 +13,7 @@
     "ensemble",
     {
       "id": "entropy",
-      "label": "讲义+真题：统计熵与最大熵原理",
+      "label": "统计熵与最大熵原理",
       "exam": "考试要求1-2 / 真题常考第一问",
       "summary": "从系综平均、Gibbs 熵、等概率原理到 Boltzmann 因子，全程不跳步。",
       "core": "p_i=e^{-\beta E_i}/Z",
@@ -103,7 +103,7 @@
     "ensemble",
     {
       "id": "canonical",
-      "label": "讲义+真题：正则、巨正则与涨落等价",
+      "label": "正则、巨正则与涨落等价",
       "exam": "考试要求3-4 / 真题常考推导",
       "summary": "把正则特性函数 F、巨正则特性函数 Ω、涨落公式和系综等价连成一条线。",
       "core": "F=-k_BT\\ln Z,\\ \\Omega=-k_BT\\ln\\mathcal Z=-PV",
@@ -209,7 +209,7 @@
     "ensemble",
     {
       "id": "idealgas",
-      "label": "讲义+真题：经典理想气体、热波长与简并判据",
+      "label": "经典理想气体、热波长与简并判据",
       "exam": "考试要求5 / 量子理想气体1",
       "summary": "从单粒子配分函数到理想气体状态方程，再把热德布罗意波长和简并参数接上。",
       "core": "n\\lambda_{th}^3",
@@ -286,7 +286,7 @@
     "quantum",
     {
       "id": "fdbe",
-      "label": "讲义+真题：二次量子化推出 FD/BE 分布",
+      "label": "二次量子化推出 FD/BE 分布",
       "exam": "考试要求2-3",
       "summary": "从 H=Σ εα nα 出发，逐个单粒子态分解巨配分函数，再推出平均占据数。",
       "core": "\\langle n_\u0007lpha\rangle=1/(e^{\beta(\\epsilon_\u0007lpha-\\mu)}\\pm1)",
@@ -363,7 +363,7 @@
     "quantum",
     {
       "id": "fermi",
-      "label": "讲义+真题：DOS、零温 Fermi 气与 Sommerfeld",
+      "label": "DOS、零温 Fermi 气与 Sommerfeld",
       "exam": "考试要求4-7",
       "summary": "从 k 空间态计数完整推出 DOS、N、U、P、零温性质和低温热容。",
       "core": "U/N=3E_F/5,\\ PV=2U/3",
@@ -469,7 +469,7 @@
     "quantum",
     {
       "id": "phonon",
-      "label": "讲义+真题：一维原子链声子量子化与 Debye 热容",
+      "label": "一维原子链声子量子化与 Debye 热容",
       "exam": "考试要求8-9",
       "summary": "从实空间位移 Hamiltonian 到 Fourier 正则坐标，再到产生湮灭算符和低温 Debye 热容。",
       "core": "\\hat H=\\sum_q\\hbar\\omega_q(a_q^\\dagger a_q+1/2)",
@@ -560,7 +560,7 @@
     "quantum",
     {
       "id": "emfield",
-      "label": "讲义+真题：电磁场量子化、黑体辐射与相干态",
+      "label": "电磁场量子化、黑体辐射与相干态",
       "exam": "考试要求10-12",
       "summary": "按考试要求的微元法路线：库伦规范 → 离散化 → 谐振子 → 光子 Hamiltonian → Planck 分布 → 相干态。",
       "core": "\\hat H=\\sum_{\\mathbf k\\lambda}\\hbar\\omega_k(a_{\\mathbf k\\lambda}^\\dagger a_{\\mathbf k\\lambda}+1/2)",
@@ -637,7 +637,7 @@
     "quantum",
     {
       "id": "bec",
-      "label": "讲义+真题：理想 Bose 气与 BEC 临界温度",
+      "label": "理想 Bose 气与 BEC 临界温度",
       "exam": "考试要求13 / 真题二维无 BEC",
       "summary": "从 Bose 分布的粒子数方程推出临界温度、凝聚分数，并说明二维均匀理想 Bose 气为何无有限温 BEC。",
       "core": "T_c=\frac{2\\pi\\hbar^2}{mk_B}\\left(\frac{n}{\\zeta(3/2)}\right)^{2/3}",
@@ -715,7 +715,7 @@
     "quantum",
     {
       "id": "hubbard",
-      "label": "讲义+真题：Hubbard 平均场与自发铁磁",
+      "label": "Hubbard 平均场与自发铁磁",
       "exam": "考试要求14",
       "summary": "从 Hubbard Hamiltonian 到平均场分解、实空间到动量空间变换、自旋极化能带和自洽方程。",
       "core": "E_{k\\sigma}=\\epsilon_k+U\\langle n_{-\\sigma}\rangle",
@@ -790,7 +790,7 @@
     "quantum",
     {
       "id": "hf-bcs",
-      "label": "讲义+真题：Hartree-Fock 与 BCS 超导完整链条",
+      "label": "Hartree-Fock 与 BCS 超导完整链条",
       "exam": "考试要求15-16",
       "summary": "先把库仑四费米项做 Hartree/Fock 平均场，再进入 Cooper 不稳定、BCS 平均场、Bogoliubov 对角化和 BCS 基态。",
       "core": "BCS 基态：Π_k(u_k+v_k pair†)|0⟩",
